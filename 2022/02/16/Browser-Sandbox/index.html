@@ -365,27 +365,27 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="Browser-Sandbox"><a href="#Browser-Sandbox" class="headerlink" title="Browser Sandbox"></a>Browser Sandbox</h1><h2 id="Chrome-Sandbox-的构造"><a href="#Chrome-Sandbox-的构造" class="headerlink" title="Chrome Sandbox 的构造"></a><a target="_blank" rel="noopener" href="https://chromium.googlesource.com/chromium/src/+/master/docs/design/sandbox.md">Chrome Sandbox 的构造</a></h2><p>Sandbox operates at process-level granularity. Anything that needs to be sandboxed needs to live on a separate process. The minimal sandbox configuration has two processes: one that is a privileged controller known as the <code>broker</code>, and one or more sandboxed processes known as the <code>target</code>. Throughout the documentation and the code these two terms are used with that precise connotation. The sandbox is provided as a static library that must be linked to both the broker and the target executables.</p>
-<h3 id="The-broker-process"><a href="#The-broker-process" class="headerlink" title="The broker process"></a>The broker process</h3><p>In Chromium, the broker is always the browser process. The broker, is in broad terms, a privileged controller&#x2F;supervisor of the activities of the sandboxed processes. The responsibilities of the broker process are:</p>
+                <h1 id="Browser-Sandbox"><a href="#Browser-Sandbox" class="headerlink" title="Browser Sandbox"></a>Browser Sandbox</h1><h2 id="Chrome-Sandbox-的构造"><a href="#Chrome-Sandbox-的构造" class="headerlink" title="Chrome Sandbox 的构造"></a><a target="_blank" rel="noopener" href="https://chromium.googlesource.com/chromium/src/+/master/docs/design/sandbox.md">Chrome Sandbox 的构造</a></h2><p>Sandbox在进程级的粒度上实现。任何需要被sandboxed的内容都需要被放到一个单独的进程中。sandbox的最小配置需要两个线程：一个是权限控制器<code>broker</code>；一个或者多个sandboxed进程<code>target</code>。<br>sandbox被实现成一个静态链接库被链接到broker和target的可执行文件中。</p>
+<h3 id="The-broker-process"><a href="#The-broker-process" class="headerlink" title="The broker process"></a>The broker process</h3><p>在Chromium中，broker通常是指browser进程。<br>广义上讲，broker是sandboxed进程的权限控制者&#x2F;监督者。broker的职责包括：</p>
 <ol>
-<li>Specify the policy for each target process</li>
-<li>Spawn the target processes</li>
-<li>Host the sandbox policy engine service</li>
-<li>Host the sandbox interception manager</li>
-<li>Host the sandbox IPC service (to the target processes)</li>
-<li>Perform the policy-allowed actions on behalf of the target process</li>
+<li>为每个target进程指定策略</li>
+<li>生成target进程</li>
+<li>托管sandbox policy engine</li>
+<li>托管sandbox interception manager</li>
+<li>托管到target进程的sandbox IPC 服务</li>
+<li>代表target进程执行策略允许的操作</li>
 </ol>
-<p>The broker should always outlive all the target processes that it spawned. The sandbox IPC is a low-level mechanism (different from Chromium’s IPC) that is used to transparently forward certain Windows API calls from the target to the broker: these calls are evaluated against the policy. The policy-allowed calls are then executed by the broker and the results returned to the target process via the same IPC. The job of the interceptions manager is to patch the Windows API calls that should be forwarded via IPC to the broker.</p>
-<h3 id="The-target-process"><a href="#The-target-process" class="headerlink" title="The target process"></a>The target process</h3><p>In Chromium, the renderers are always target processes, unless the –no-sandbox command line has been specified for the browser process. The target process hosts all the code that is going to run inside the sandbox, plus the sandbox infrastructure client side:</p>
+<p>Broker进程要比所有它派生的target进程都长寿。sandbox IPC不同于chromium的IPC，是一个low-level的机制，用于将来自target的Windows API调用透明地传送给broker。这些API调用根据策略进行评估后，被策略允许的调用由broker执行，然后broker经由相同的IPC将执行结果返还给target。<br>其中，拦截器（interceptions manager）被用于分发需要从IPC发送给broker的Windows API调用。</p>
+<h3 id="The-target-process"><a href="#The-target-process" class="headerlink" title="The target process"></a>The target process</h3><p>在Chromium中，renderer经常被作为target进程，除非在browser进程启动时加了–no-sandbox的命令行。target进程承载了所有即将在sandbox内部执行的代码，以及sandbox本身的基础设施客户端：</p>
 <ol>
-<li>All code to be sandboxed</li>
+<li>所有sandboxed的代码</li>
 <li>The sandbox IPC client</li>
 <li>The sandbox policy engine client</li>
 <li>The sandbox interceptions</li>
-<li>Items 2,3 and 4 are part of the sandbox library that is linked with the code to be sandboxed.</li>
+<li>第2,3,4都是被链接进来的sandbox静态库的一部分。</li>
 </ol>
-<p>The interceptions (also known as hooks) are how Windows API calls are forwarded via the sandbox IPC to the broker. It is up to the broker to re-issue the API calls and return the results or simply fail the calls. The interception + IPC mechanism does not provide security; it is designed to provide compatibility when code inside the sandbox cannot be modified to cope with sandbox restrictions. To save unnecessary IPCs, policy is also evaluated in the target process before making an IPC call, although this is not used as a security guarantee but merely a speed optimization.</p>
-<p>It is the expectation that in the future most plugins will run inside a target process.<br><img src="/../medias/Chrome%20Sandbox%20Architecture.png" alt="Chrome Sandbox Architecture"></p>
+<p>Interceptions&#x2F;hooks负责将target的Windows API调用通过sandbox IPC发送给broker。之后，broker会重新发起相同的API调用并返回target执行结果，或者直接返回一个调用错误。<br>interception + IPC 机制并不提供安全性; 它的设计是用于当sandboxed code无法修改时，增强sandbox本身的兼容性。为了减少不必要的IPC，target进程在发起IPC通信前中也会进行一次policy的评估，这不提供安全性保证，但能尽可能地优化速度。<br>在未来，大多数的插件都将被运行在sandbox的target进程中。</p>
+<p><img src="/../medias/Chrome%20Sandbox%20Architecture.png" alt="Chrome Sandbox Architecture"></p>
 <h2 id="相关研究"><a href="#相关研究" class="headerlink" title="相关研究"></a>相关研究</h2><p><a target="_blank" rel="noopener" href="https://powerofcommunity.net/poc2018/ned.pdf">Exploiting Chrome IPC</a><br><a target="_blank" rel="noopener" href="https://blog.ret2.io/2018/07/25/pwn2own-2018-safari-sandbox/">Cracking the Walls of the Safari Sandbox</a></p>
 
                 

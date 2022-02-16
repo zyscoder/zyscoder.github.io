@@ -322,9 +322,17 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/browser/">
+                                <span class="chip bg-color">browser</span>
+                            </a>
+                        
+                            <a href="/tags/sandbox/">
+                                <span class="chip bg-color">sandbox</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
@@ -357,7 +365,28 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                
+                <h1 id="Browser-Sandbox"><a href="#Browser-Sandbox" class="headerlink" title="Browser Sandbox"></a>Browser Sandbox</h1><h2 id="Chrome-Sandbox-的构造"><a href="#Chrome-Sandbox-的构造" class="headerlink" title="Chrome Sandbox 的构造"></a><a target="_blank" rel="noopener" href="https://chromium.googlesource.com/chromium/src/+/master/docs/design/sandbox.md">Chrome Sandbox 的构造</a></h2><p>Sandbox operates at process-level granularity. Anything that needs to be sandboxed needs to live on a separate process. The minimal sandbox configuration has two processes: one that is a privileged controller known as the <code>broker</code>, and one or more sandboxed processes known as the <code>target</code>. Throughout the documentation and the code these two terms are used with that precise connotation. The sandbox is provided as a static library that must be linked to both the broker and the target executables.</p>
+<h3 id="The-broker-process"><a href="#The-broker-process" class="headerlink" title="The broker process"></a>The broker process</h3><p>In Chromium, the broker is always the browser process. The broker, is in broad terms, a privileged controller&#x2F;supervisor of the activities of the sandboxed processes. The responsibilities of the broker process are:</p>
+<ol>
+<li>Specify the policy for each target process</li>
+<li>Spawn the target processes</li>
+<li>Host the sandbox policy engine service</li>
+<li>Host the sandbox interception manager</li>
+<li>Host the sandbox IPC service (to the target processes)</li>
+<li>Perform the policy-allowed actions on behalf of the target process</li>
+</ol>
+<p>The broker should always outlive all the target processes that it spawned. The sandbox IPC is a low-level mechanism (different from Chromium’s IPC) that is used to transparently forward certain Windows API calls from the target to the broker: these calls are evaluated against the policy. The policy-allowed calls are then executed by the broker and the results returned to the target process via the same IPC. The job of the interceptions manager is to patch the Windows API calls that should be forwarded via IPC to the broker.</p>
+<h3 id="The-target-process"><a href="#The-target-process" class="headerlink" title="The target process"></a>The target process</h3><p>In Chromium, the renderers are always target processes, unless the –no-sandbox command line has been specified for the browser process. The target process hosts all the code that is going to run inside the sandbox, plus the sandbox infrastructure client side:</p>
+<ol>
+<li>All code to be sandboxed</li>
+<li>The sandbox IPC client</li>
+<li>The sandbox policy engine client</li>
+</ol>
+<p>4.The sandbox interceptions<br>5. Items 2,3 and 4 are part of the sandbox library that is linked with the code to be sandboxed.</p>
+<p>The interceptions (also known as hooks) are how Windows API calls are forwarded via the sandbox IPC to the broker. It is up to the broker to re-issue the API calls and return the results or simply fail the calls. The interception + IPC mechanism does not provide security; it is designed to provide compatibility when code inside the sandbox cannot be modified to cope with sandbox restrictions. To save unnecessary IPCs, policy is also evaluated in the target process before making an IPC call, although this is not used as a security guarantee but merely a speed optimization.</p>
+<p>It is the expectation that in the future most plugins will run inside a target process.<br><img src="/../medias/Chrome%20Sandbox%20Architecture.png" alt="Chrome Sandbox Architecture"></p>
+<h2 id="相关研究"><a href="#相关研究" class="headerlink" title="相关研究"></a>相关研究</h2><p><a target="_blank" rel="noopener" href="https://powerofcommunity.net/poc2018/ned.pdf">Exploiting Chrome IPC</a><br><a target="_blank" rel="noopener" href="https://blog.ret2.io/2018/07/25/pwn2own-2018-safari-sandbox/">Cracking the Walls of the Safari Sandbox</a></p>
+
                 
             </div>
             <hr/>
@@ -420,7 +449,15 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
+                            
+                                <a href="/tags/browser/">
+                                    <span class="chip bg-color">browser</span>
+                                </a>
+                            
+                                <a href="/tags/sandbox/">
+                                    <span class="chip bg-color">sandbox</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -495,6 +532,18 @@
                     </div>
                 </div>
 
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/browser/">
+                        <span class="chip bg-color">browser</span>
+                    </a>
+                    
+                    <a href="/tags/sandbox/">
+                        <span class="chip bg-color">sandbox</span>
+                    </a>
+                    
+                </div>
                 
             </div>
         </div>

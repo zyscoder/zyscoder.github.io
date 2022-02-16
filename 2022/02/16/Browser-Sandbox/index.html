@@ -381,8 +381,9 @@
 <li>All code to be sandboxed</li>
 <li>The sandbox IPC client</li>
 <li>The sandbox policy engine client</li>
+<li>The sandbox interceptions</li>
+<li>Items 2,3 and 4 are part of the sandbox library that is linked with the code to be sandboxed.</li>
 </ol>
-<p>4.The sandbox interceptions<br>5. Items 2,3 and 4 are part of the sandbox library that is linked with the code to be sandboxed.</p>
 <p>The interceptions (also known as hooks) are how Windows API calls are forwarded via the sandbox IPC to the broker. It is up to the broker to re-issue the API calls and return the results or simply fail the calls. The interception + IPC mechanism does not provide security; it is designed to provide compatibility when code inside the sandbox cannot be modified to cope with sandbox restrictions. To save unnecessary IPCs, policy is also evaluated in the target process before making an IPC call, although this is not used as a security guarantee but merely a speed optimization.</p>
 <p>It is the expectation that in the future most plugins will run inside a target process.<br><img src="/../medias/Chrome%20Sandbox%20Architecture.png" alt="Chrome Sandbox Architecture"></p>
 <h2 id="相关研究"><a href="#相关研究" class="headerlink" title="相关研究"></a>相关研究</h2><p><a target="_blank" rel="noopener" href="https://powerofcommunity.net/poc2018/ned.pdf">Exploiting Chrome IPC</a><br><a target="_blank" rel="noopener" href="https://blog.ret2.io/2018/07/25/pwn2own-2018-safari-sandbox/">Cracking the Walls of the Safari Sandbox</a></p>

@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="SOK: On the Analysis of Web Browser Security, zyscoder">
+    <meta name="keywords" content="Chromium Win32k system call lockdown, zyscoder">
     <meta name="description" content="Keep calm, and dream on.">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>SOK: On the Analysis of Web Browser Security | zyscoder</title>
+    <title>Chromium Win32k system call lockdown | zyscoder</title>
     <link rel="icon" type="image/png" href="/medias/%E7%99%BD%E8%89%B2%E5%8F%B2%E8%8E%B1%E5%A7%86.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -203,12 +203,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/4.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">SOK: On the Analysis of Web Browser Security</h1>
+                    <h1 class="description center-align post-title">Chromium Win32k system call lockdown</h1>
                 </div>
             </div>
         </div>
@@ -328,23 +328,26 @@
                                 <span class="chip bg-color">browser</span>
                             </a>
                         
-                            <a href="/tags/security/">
-                                <span class="chip bg-color">security</span>
+                            <a href="/tags/chrome/">
+                                <span class="chip bg-color">chrome</span>
+                            </a>
+                        
+                            <a href="/tags/windows/">
+                                <span class="chip bg-color">windows</span>
+                            </a>
+                        
+                            <a href="/tags/win32k/">
+                                <span class="chip bg-color">win32k</span>
+                            </a>
+                        
+                            <a href="/tags/win32k-lockdown/">
+                                <span class="chip bg-color">win32k lockdown</span>
                             </a>
                         
                     </div>
                     
                 </div>
                 <div class="col s5 right-align">
-                    
-                    <div class="post-cate">
-                        <i class="fas fa-bookmark fa-fw icon-category"></i>
-                        
-                            <a href="/categories/paper/" class="post-category">
-                                paper
-                            </a>
-                        
-                    </div>
                     
                 </div>
             </div>
@@ -374,98 +377,21 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="SOK-On-the-Analysis-of-Web-Browser-Security"><a href="#SOK-On-the-Analysis-of-Web-Browser-Security" class="headerlink" title="SOK: On the Analysis of Web Browser Security"></a>SOK: On the Analysis of Web Browser Security</h1><h2 id="INTRODUCTION"><a href="#INTRODUCTION" class="headerlink" title="INTRODUCTION"></a>INTRODUCTION</h2><p>浏览器是网络的门户，被普遍运用于银行交易、医疗记录查询等各种跟安全和隐私相关的事务。不幸的是，由于浏览器的复杂性、代码量大，很难做到bug-free。因而浏览器是攻击者非常有吸引力的一个攻击目标——2021年50%的0-day都是攻击浏览器的。</p>
-<p>为了提高浏览器的安全性，浏览器厂商做了很多安全性相关的实践：</p>
-<ol>
-<li>开源代码和浏览器架构，以及设计流程；</li>
-<li>提供bounty，奖励0-day漏洞的提交；</li>
-<li>主动去挖漏洞，并开发和部署云fuzzer；</li>
-</ol>
-<p>然而，这些安全性设计的细节，以及对最新攻击的缓解方式，像妖术一样被写在社区里的各种博客和文章里，没有系统性的整理和总结，很难形成经验教训，为以后的发展形成指导。</p>
-<p>本文尝试将现代web浏览器的安全性进行系统化研究。</p>
+                <h1 id="Chromium-Win32k-system-call-lockdown"><a href="#Chromium-Win32k-system-call-lockdown" class="headerlink" title="Chromium Win32k system call lockdown"></a><a target="_blank" rel="noopener" href="https://docs.google.com/document/d/1gJDlk-9xkh6_8M_awrczWCaUuyr0Zd2TKjNBCiPO_G4/edit#">Chromium Win32k system call lockdown</a></h1><h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>Chromium sandbox通过利用操作系统提供的安全功能为Chromium进程提供强大的进程隔离，提供了一个纵深防御安全屏障。有了沙箱，即使处理不受信任的用户输入的Chromium进程（例如渲染器进程）遭到破坏，如果不将其与沙箱转义相结合，系统的其余部分也不会受到破坏。<br>渲染器进程处理大量不受信任的输入，还运行Chromium解析引擎中最复杂的部分（blink和v8），因此渲染器进程通常尽可能多地使用沙盒。<br>一旦攻下了渲染器进程，攻击者可以做如下几件事：</p>
 <ul>
-<li>我们首先提供了四种主要web浏览器的统一模型，并使用提供的模型比较和对比它们的安全决策。</li>
-<li>其次，基于该模型，我们分析了过去10年中在每个开源浏览器中发现的安全漏洞，并展示了它们与开发新的缓解方案、漏洞赏金计划和已知的野生利用技术的关系。</li>
-<li>第三，基于我们的研究，我们传达了我们的见解和教训，以启发正在塑造web浏览器未来的研究人员和开发人员。</li>
+<li>他们可以完全访问渲染器进程中包含的Cookie&#x2F;数据，如果共享了不同的origin（例如iFrame），则攻击者可以从其他origin读取数据（例如Cookie）。名为site isolation的项目正在努力确保，即使在受损的渲染器中运行，攻击也只能通过渲染器进程来访问绑定到该渲染器进程的origin已经可以访问的数据。</li>
+<li>攻击者的另一个途径是尝试并破browser进程，该进程被多个IPC端点暴露。例如，在pwnium 2中，Pinky Pie能够利用tcmalloc IPC消息在Linux平台上执行任意文件写入，而在pwn2own 2014中，VUPEN能够利用ClipboardHostMsg_WriteObjectsAsync触发Windows剪贴板漏洞；</li>
+<li>攻击者用来逃逸沙盒进程的另一种方法是简单地利用底层操作系统进行攻击。例如，在Linux上，futex漏洞CVE-2014-3153允许从渲染器进程升级权限。在Windows上，有许多内核漏洞被利用的案例，例如pwn2own 2013 MWR成功地利用了Win32k.sys bug逃逸chromium沙箱；</li>
 </ul>
-<p>我们希望我们的系统化尝试能够帮助他们以整体的方式了解每个供应商的方法，从而增强他们的安全设计，以最大限度地减少安全影响和攻击面。</p>
-<p>系统化研究过程中的challenges：</p>
-<ol>
-<li><code>变化的target</code>。浏览器的迭代速度快过任何其他的项目。为了总结出经验教训，本文只关注浏览器基础的设计问题和方法；</li>
-<li><code>超大的size</code>。浏览器代码量很大；此外跟浏览器相关的漏洞的资料也非常多且杂乱。本文只关注四款主流浏览器：Chrome，Firefox，Safari，Edge；并研究他们的issue列表和CVE报告；</li>
-<li><code>各不相同的设计</code>。各浏览器在处理安全问题的时候都有各自的现状和限制，本文为了对他们的安全问题做出客观的评价，忽略掉一些实现的细节，提出一个统一的模型来对他们进行比较；</li>
-</ol>
-<p>本文的contribution：</p>
-<ol>
-<li>根据沙箱方案比较了现代浏览器的架构；</li>
-<li>研究了10年时间的浏览器bugs；</li>
-<li>对这些漏洞进行了细致的分析和分类；</li>
-<li>研究了浏览器最新的通用缓解措施；</li>
-<li>对真实世界中的全利用链进行的研究。</li>
-</ol>
-<h2 id="MODERN-BROWSER-ARCHITECTURE"><a href="#MODERN-BROWSER-ARCHITECTURE" class="headerlink" title="MODERN BROWSER ARCHITECTURE"></a>MODERN BROWSER ARCHITECTURE</h2><p>浏览器实行最小权限原则，将进程作为保护域。</p>
-<h3 id="所有的浏览器都可以分为三种进程类型："><a href="#所有的浏览器都可以分为三种进程类型：" class="headerlink" title="所有的浏览器都可以分为三种进程类型："></a>所有的浏览器都可以分为三种进程类型：</h3><ul>
-<li>browser进程：browser进程的权限和当前user的权限相同（高权限）。browser启动时向OS传递沙箱配置，用以管控所有的child进程（低权限）。browser进程是浏览器调用syscall的唯一进程。</li>
-<li>renderer进程：renderer包含各种组件，是浏览器最大的bug生产者，因此renderer也被放入沙箱中。</li>
-<li>task-specific进程。</li>
-</ul>
-<p>此外：</p>
-<ul>
-<li>浏览器各进程之间通过IPC通讯，通常由browser进程进行管理；</li>
-<li>同源策略；</li>
-</ul>
-<p><img src="/../medias/papers/SOK:%20On%20the%20Analysis%20of%20Web%20Browser%20Security/figure1.png" alt="Internal architecture of four major web browsers" title="Internal architecture of four major web browsers"></p>
-<h3 id="浏览器之间的不同之处"><a href="#浏览器之间的不同之处" class="headerlink" title="浏览器之间的不同之处"></a>浏览器之间的不同之处</h3><ul>
-<li>站点隔离（Site Isolation）<ul>
-<li>UXSS可以不出沙箱就盗取用户数据，为了防止UXSS攻击，chrome提出Site Isolation把不同域放到不同的进程中；</li>
-<li>Site Isolation也可以防一些硬件瞬时攻击；</li>
-<li>Firefox有个类似的项目叫Fission；</li>
-</ul>
-</li>
-<li>JavaScript Engine<ul>
-<li>各浏览器用得不一样，但是大体框架类似；</li>
-</ul>
-</li>
-<li>Rendering Engine<ul>
-<li>不同浏览器有不同的实现；</li>
-<li>有一个基础的specification作为标准，但是不同浏览器的实现进度有差异；</li>
-</ul>
-</li>
-</ul>
-<h3 id="沙箱"><a href="#沙箱" class="headerlink" title="沙箱"></a>沙箱</h3><h4 id="沙箱的权限策略分类："><a href="#沙箱的权限策略分类：" class="headerlink" title="沙箱的权限策略分类："></a>沙箱的权限策略分类：</h4><ol>
-<li>Privilege reduction</li>
-<li>Domain separation</li>
-<li>Attack surface reduction: 限制访问系统设备、内核或设备驱动等；<h4 id="不同操作系统的沙箱实现："><a href="#不同操作系统的沙箱实现：" class="headerlink" title="不同操作系统的沙箱实现："></a>不同操作系统的沙箱实现：</h4></li>
-</ol>
-<ul>
-<li>Windows：Windows通过使用安全令牌来限制每个进程。获得特定令牌级别的进程可以访问具有适当安全描述符级别的特权资源。例如，render进程以低完整性令牌级别运行，broker进程以中等完整性令牌级别运行，因此默认情况下，从渲染器进程到代理进程的任何写访问都将受到限制；</li>
-<li>然而，细粒度访问控制没有统一的协议。为了解决这个问题，Chrome和Firefox使用自己的IPC机制和资源相关函数上的二进制代码补丁来支持细粒度规则集。Microsoft在Windows 8中引入了AppContainer，通过添加附加到进程令牌的功能概念，对资源实施更细粒度的访问控制。Edge基于AppContainer创建了一个沙盒。从deny-by-default开始，Edge为被访问的系统资源构建了一组能力集（大概意思是什么权限的进程，可以用被调资源做到什么能力的事情吧）。Chrome还在试验基于AppContainer的沙盒。浏览器还利用各种功能来减少沙盒逃逸。例如，备用桌面和备用窗口工作站可用于缓解基于UI的攻击，如Shatter；引入了lockdown default DACL和Random Restricting SIDs，以强制实施更严格的DACL，从而使受损的沙盒进程无法访问其他沙盒进程；</li>
-<li>Linux：与Windows不同，Linux沙盒主要基于seccomp、chroot和namespace。seccomp是基于eBPF语言的标准系统调用过滤器。由于默认的seccomp配置过于严格（？Overly tight），浏览器定义了自己的过滤规则。例如，Chrome将其自定义的seccomp规则应用于除broker进程之外的所有进程，每个进程的详细规则各不相同。第二，为了限制文件访问，基于Linux的浏览器沙盒利用chroot监禁。一旦一个进程被chroot限制，就无法访问文件系统的上层。例如，Firefox将chroot监禁应用于所有渲染器，只允许它们根据从broker进程获得的文件描述符访问特定文件。此外，浏览器使用namepsace为各种资源（如用户、网络和IPC）创建单独的空间。例如，创建并加入一个用户名称空间可以使沙盒进程位于单独的UID和GID中，从而有效地禁用对其他未沙盒进程的访问；</li>
-<li>MacOS：虽然Windows和Linux支持各种类型的沙箱原语，但macOS支持一个特定格式的沙箱配置文件（.sb），用于描述给定进程的沙箱策略。通常，该文件提供允许访问的绝对文件路径的允许列表，并在默认情况下阻止所有其他文件访问。该配置文件还定义了访问网络和共享内存等其他资源的能力，并支持基于系统调用的过滤，比如Linux的seccomp，尽管它仅部署在Safari上；<h4 id="移动端的Sandbox"><a href="#移动端的Sandbox" class="headerlink" title="移动端的Sandbox"></a>移动端的Sandbox</h4>由于移动端的内存等系统资源比较紧缺，导致他们在使用sandbox的时候显得比较微妙；比如Chrome的Site Isolation只在内存大于1.9G的设备上启用，并且只在用户需要输入密码的页面才启用；IOS上的sandbox规则也和MacOS不太一样，因为他们拥有不同的系统服务和IOKit驱动；</li>
-</ul>
-<h3 id="浏览器Exploit"><a href="#浏览器Exploit" class="headerlink" title="浏览器Exploit"></a>浏览器Exploit</h3><p>浏览器攻击的目标是窃取用户的敏感数据或安装恶意软件以采取进一步行动。攻击者可以通过执行UXSS等攻击直接窃取数据，或者先执行代码，然后试图逃离沙箱。攻击者可能会试图通过攻击内核来获得系统的权限并逃离沙箱，这超出了本文的范围。多亏了各种缓解方案，攻击者需要将多个漏洞链接在一起，以获得任意执行。即使在控制流被劫持之后，由于渲染器进程在沙箱中运行，攻击者也应该在broker进程中找到另一组bug来逃离沙箱。攻击者经常试图利用系统服务、驱动程序或内核中的漏洞，而不是broker进程中的漏洞，来突破沙箱，这取决于其武库中可用的漏洞；</p>
-<p><img src="/../medias/papers/SOK:%20On%20the%20Analysis%20of%20Web%20Browser%20Security/sandbox%20comparison.png" alt="Sandbox Comparison"></p>
-<h2 id="浏览器漏洞和缓解措施"><a href="#浏览器漏洞和缓解措施" class="headerlink" title="浏览器漏洞和缓解措施"></a>浏览器漏洞和缓解措施</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://chromium.googlesource.com/chromium/src/+/HEAD/docs/design/sandbox.md">Sandbox</a><ul>
-<li><a target="_blank" rel="noopener" href="https://docs.google.com/document/d/1gJDlk-9xkh6_8M_awrczWCaUuyr0Zd2TKjNBCiPO_G4/edit">Win32k lockdown</a><ul>
-<li>Renderer processes handle the greatest volume of untrusted input, and also run the most complex parts of Chromium’s parsing engine - blink and v8 - so renderer processes are typically sandboxes as much as possible.</li>
-</ul>
-</li>
-<li>Hypervisor based sandboxing</li>
-</ul>
-</li>
-</ul>
-<h2 id="MISCs"><a href="#MISCs" class="headerlink" title="MISCs:"></a>MISCs:</h2><ul>
-<li><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/sparkdev/p/8556075.html">Chroot</a><br>chroot，即 change root directory (更改 root 目录)。在 linux 系统中，系统默认的目录结构都是以 &#x2F;，即以根 (root) 开始的。而在使用 chroot 之后，系统的目录结构将以指定的位置作为 &#x2F; 位置;</p>
-<ul>
-<li>增加了系统的安全性，限制了用户的权力：<br>在经过 chroot 之后，在新根下将访问不到旧系统的根目录结构和文件，这样就增强了系统的安全性。一般会在用户登录前应用 chroot，把用户的访问能力控制在一定的范围之内。</li>
-<li>建立一个与原系统隔离的系统目录结构，方便用户的开发：<br>使用 chroot 后，系统读取的是新根下的目录和文件，这是一个与原系统根下文件不相关的目录结构。在这个新的环境中，可以用来测试软件的静态编译以及一些与系统不相关的独立开发。</li>
-<li>切换系统的根目录位置，引导Linux系统启动以及急救系统等：<br>chroot的作用就是切换系统的根位置，而这个作用最为明显的是在系统初始引导磁盘的处理过程中使用，从初始RAM磁盘 (initrd) 切换系统的根位置并执行真正的init;</li>
-</ul>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/zpchcbd/p/12374668.html">ACL, ACE, DACL, SACL</a></p>
-</li>
-</ul>
+<p>Win32k system call lockdown希望解决的是利用内核漏洞的第三种攻击途径。</p>
+<p>在Linux里，一方面修复bug的速度相对较快；另一方面，Linux使用seccomp bpf引擎进行系统调用过滤。这允许在阻止系统调用的进程（例如渲染器进程）上放置细粒度的安全规则（如系统调用防火墙）。例如，在futex bug的情况下，可以修改seccomp bpf中chromium的规则，以便即使在有该bug的内核上，由于调用被阻止，该bug也无法被利用。</p>
+<p>在Windows上，系统调用大致分为两种主要类型，由内核中的两个独立子系统实现。首先是nt!* 调用，由ntoskrnl.exe实现，还有win32k!* 调用，由Win32k.sys实现。Win32k调用往往与图形子系统（出于性能和历史原因，它在Windows上的内核中运行）相关联，而ntoskrnl调用更多地用于Windows NT api，例如文件访问、网络、POSIX。<br>在Windows上，没有细粒度的系统调用过滤，但每个系统调用都负责验证调用方的访问令牌是否允许进行调用。</p>
+<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>创建一个新的沙盒缓解策略，该策略设置Windows 8中可用的win32k系统调用限制进程缓解策略。将此策略应用于渲染器进程。识别渲染器进程中进行的所有win32k调用，并且a）删除它们，或b）填充它们。</p>
+<h2 id="Detailed-Design"><a href="#Detailed-Design" class="headerlink" title="Detailed Design"></a>Detailed Design</h2><p>在Windows 8中，Microsoft添加了一个新的进程缓解策略，称为<code>PROCESS_CREATION_MITIGATION_POLICY_WIN32K_SYSTEM_CALL_DISABLE_ALWAYS_ON</code>:</p>
+<blockquote>
+<p>“Win32k系统调用禁用策略，如果启用，将阻止进程进行Win32k调用。”</p>
+</blockquote>
+<p>对于不需要进行任何字体&#x2F;图形工作的进程，这有效地减少内核攻击面。<br>在renderer进程运行的时候，除了少数几个启动renderer必要的win32k系统调用被代理以外，其他的win32k系统调用都会被拦截（详细实现详见<a target="_blank" rel="noopener" href="https://docs.google.com/document/d/1gJDlk-9xkh6_8M_awrczWCaUuyr0Zd2TKjNBCiPO_G4/edit#">文档</a>）。win32k system call lock通过命令行参数–enable-win32k-renderer-lockdown公开（也就是说不加这个命令行就不会启用？）</p>
 
                 
             </div>
@@ -492,7 +418,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://zyscoder.github.io/2022/02/28/SOK-On-the-Analysis-of-Web-Browser-Security/">https://zyscoder.github.io/2022/02/28/SOK-On-the-Analysis-of-Web-Browser-Security/</a>
+                    <a href="https://zyscoder.github.io/2022/02/28/Chromium-Win32k-system-call-lockdown/">https://zyscoder.github.io/2022/02/28/Chromium-Win32k-system-call-lockdown/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -534,8 +460,20 @@
                                     <span class="chip bg-color">browser</span>
                                 </a>
                             
-                                <a href="/tags/security/">
-                                    <span class="chip bg-color">security</span>
+                                <a href="/tags/chrome/">
+                                    <span class="chip bg-color">chrome</span>
+                                </a>
+                            
+                                <a href="/tags/windows/">
+                                    <span class="chip bg-color">windows</span>
+                                </a>
+                            
+                                <a href="/tags/win32k/">
+                                    <span class="chip bg-color">win32k</span>
+                                </a>
+                            
+                                <a href="/tags/win32k-lockdown/">
+                                    <span class="chip bg-color">win32k lockdown</span>
                                 </a>
                             
                         </div>
@@ -579,9 +517,10 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2022/02/28/Chromium-Win32k-system-call-lockdown/">
                     <div class="card-image">
@@ -599,9 +538,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-02-28
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-02-28
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -610,6 +549,7 @@
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -644,13 +584,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/02/18/Chapter-2-of-The-Story-of-Bible/">
+                <a href="/2022/02/28/SOK-On-the-Analysis-of-Web-Browser-Security/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="Chapter 2 of &#34;The Story of Bible&#34;">
+                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="SOK: On the Analysis of Web Browser Security">
                         
-                        <span class="card-title">Chapter 2 of &#34;The Story of Bible&#34;</span>
+                        <span class="card-title">SOK: On the Analysis of Web Browser Security</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -661,14 +601,14 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-02-18
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-02-28
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/reading/" class="post-category">
-                                    reading
+                            <a href="/categories/paper/" class="post-category">
+                                    paper
                                 </a>
                             
                             
@@ -678,12 +618,12 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/bible/">
-                        <span class="chip bg-color">bible</span>
+                    <a href="/tags/browser/">
+                        <span class="chip bg-color">browser</span>
                     </a>
                     
-                    <a href="/tags/The-Story-of-the-Bible/">
-                        <span class="chip bg-color">The Story of the Bible</span>
+                    <a href="/tags/security/">
+                        <span class="chip bg-color">security</span>
                     </a>
                     
                 </div>

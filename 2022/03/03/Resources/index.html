@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Browser Sandbox, zyscoder">
+    <meta name="keywords" content="Resources, zyscoder">
     <meta name="description" content="Keep calm, and dream on.">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Browser Sandbox | zyscoder</title>
+    <title>Resources | zyscoder</title>
     <link rel="icon" type="image/png" href="/medias/%E7%99%BD%E8%89%B2%E5%8F%B2%E8%8E%B1%E5%A7%86.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -203,12 +203,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/9.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Browser Sandbox</h1>
+                    <h1 class="description center-align post-title">Resources</h1>
                 </div>
             </div>
         </div>
@@ -324,27 +324,14 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/browser/">
-                                <span class="chip bg-color">browser</span>
-                            </a>
-                        
-                            <a href="/tags/sandbox/">
-                                <span class="chip bg-color">sandbox</span>
+                            <a href="/tags/Resources/">
+                                <span class="chip bg-color">Resources</span>
                             </a>
                         
                     </div>
                     
                 </div>
                 <div class="col s5 right-align">
-                    
-                    <div class="post-cate">
-                        <i class="fas fa-bookmark fa-fw icon-category"></i>
-                        
-                            <a href="/categories/tech/" class="post-category">
-                                tech
-                            </a>
-                        
-                    </div>
                     
                 </div>
             </div>
@@ -353,7 +340,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-02-16
+                    2022-03-03
                 </div>
                 
 
@@ -374,29 +361,12 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="Browser-Sandbox"><a href="#Browser-Sandbox" class="headerlink" title="Browser Sandbox"></a>Browser Sandbox</h1><h2 id="Chrome-Sandbox-的构造"><a href="#Chrome-Sandbox-的构造" class="headerlink" title="Chrome Sandbox 的构造"></a><a target="_blank" rel="noopener" href="https://chromium.googlesource.com/chromium/src/+/master/docs/design/sandbox.md">Chrome Sandbox 的构造</a></h2><p>Sandbox在进程级的粒度上实现。任何需要被sandboxed的内容都需要被放到一个单独的进程中。sandbox的最小配置需要两个线程：一个是权限控制器<code>broker</code>；一个或者多个sandboxed进程<code>target</code>。<br>sandbox被实现成一个静态链接库被链接到broker和target的可执行文件中。</p>
-<h3 id="The-broker-process"><a href="#The-broker-process" class="headerlink" title="The broker process"></a>The broker process</h3><p>在Chromium中，broker通常是指browser进程。<br>广义上讲，broker是sandboxed进程的权限控制者&#x2F;监督者。broker的职责包括：</p>
-<ol>
-<li>为每个target进程指定策略</li>
-<li>生成target进程</li>
-<li>托管sandbox policy engine</li>
-<li>托管sandbox interception manager</li>
-<li>托管到target进程的sandbox IPC 服务</li>
-<li>代表target进程执行策略允许的操作</li>
-</ol>
-<p>Broker进程要比所有它派生的target进程都长寿。sandbox IPC不同于chromium的IPC，是一个low-level的机制，用于将来自target的Windows API调用透明地传送给broker。这些API调用根据策略进行评估后，被策略允许的调用由broker执行，然后broker经由相同的IPC将执行结果返还给target。<br>其中，拦截器（interceptions manager）被用于分发需要从IPC发送给broker的Windows API调用。</p>
-<h3 id="The-target-process"><a href="#The-target-process" class="headerlink" title="The target process"></a>The target process</h3><p>在Chromium中，renderer经常被作为target进程，除非在browser进程启动时加了–no-sandbox的命令行。target进程承载了所有即将在sandbox内部执行的代码，以及sandbox本身的基础设施客户端：</p>
-<ol>
-<li>所有sandboxed的代码</li>
-<li>The sandbox IPC client</li>
-<li>The sandbox policy engine client</li>
-<li>The sandbox interceptions</li>
-<li>第2,3,4都是被链接进来的sandbox静态库的一部分。</li>
-</ol>
-<p>Interceptions&#x2F;hooks负责将target的Windows API调用通过sandbox IPC发送给broker。之后，broker会重新发起相同的API调用并返回target执行结果，或者直接返回一个调用错误。<br>interception + IPC 机制并不提供安全性; 它的设计是用于当sandboxed code无法修改时，增强sandbox本身的兼容性。为了减少不必要的IPC，target进程在发起IPC通信前中也会进行一次policy的评估，这不提供安全性保证，但能尽可能地优化速度。<br>在未来，大多数的插件都将被运行在sandbox的target进程中。</p>
-<p><img src="/../medias/Chrome%20Sandbox%20Architecture.png" alt="Chrome Sandbox Architecture"></p>
-<h2 id="相关研究"><a href="#相关研究" class="headerlink" title="相关研究"></a>相关研究</h2><p><a target="_blank" rel="noopener" href="https://powerofcommunity.net/poc2018/ned.pdf">Exploiting Chrome IPC</a><br><a target="_blank" rel="noopener" href="https://blog.ret2.io/2018/07/25/pwn2own-2018-safari-sandbox/">Cracking the Walls of the Safari Sandbox</a></p>
-<h2 id="其他资料"><a href="#其他资料" class="headerlink" title="其他资料"></a>其他资料</h2><p><a target="_blank" rel="noopener" href="https://stackify.dev/776744-using-the-google-chrome-sandbox">如何借用chrome sandbox</a><br><a target="_blank" rel="noopener" href="https://medium.com/swlh/my-take-on-chrome-sandbox-escape-exploit-chain-dbf5a616eec5">Chrome Sandbox Escape Exploit Chain</a></p>
+                <h1 id="Resources"><a href="#Resources" class="headerlink" title="Resources"></a>Resources</h1><h2 id="Browsers"><a href="#Browsers" class="headerlink" title="Browsers"></a>Browsers</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://googleprojectzero.blogspot.com/p/0day.html">0day in the wild</a></li>
+</ul>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.bleepingcomputer.com/news/security/hackers-leak-190gb-of-alleged-samsung-data-source-code/">Hackers leak 190GB of alleged Samsung data, source code</a></li>
+</ul>
 
                 
             </div>
@@ -423,7 +393,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://zyscoder.github.io/2022/02/16/Browser-Sandbox/">https://zyscoder.github.io/2022/02/16/Browser-Sandbox/</a>
+                    <a href="https://zyscoder.github.io/2022/03/03/Resources/">https://zyscoder.github.io/2022/03/03/Resources/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -461,12 +431,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/browser/">
-                                    <span class="chip bg-color">browser</span>
-                                </a>
-                            
-                                <a href="/tags/sandbox/">
-                                    <span class="chip bg-color">sandbox</span>
+                                <a href="/tags/Resources/">
+                                    <span class="chip bg-color">Resources</span>
                                 </a>
                             
                         </div>
@@ -514,13 +480,13 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2022/02/16/Browser-User-Interface/">
+                <a href="/2022/03/14/Not-So-Fast-Analyzing-the-Performance-of-WebAssembly-vs-Native-Code/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="Browser User Interface">
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="Not So Fast: Analyzing the Performance of WebAssembly vs. Native Code">
                         
-                        <span class="card-title">Browser User Interface</span>
+                        <span class="card-title">Not So Fast: Analyzing the Performance of WebAssembly vs. Native Code</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -531,14 +497,14 @@
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-02-16
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-03-14
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/tech/" class="post-category">
-                                    tech
+                            <a href="/categories/paper/" class="post-category">
+                                    paper
                                 </a>
                             
                             
@@ -548,12 +514,16 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/browser/">
-                        <span class="chip bg-color">browser</span>
+                    <a href="/tags/wasm/">
+                        <span class="chip bg-color">wasm</span>
                     </a>
                     
-                    <a href="/tags/ui/">
-                        <span class="chip bg-color">ui</span>
+                    <a href="/tags/measurement/">
+                        <span class="chip bg-color">measurement</span>
+                    </a>
+                    
+                    <a href="/tags/usenix-atc/">
+                        <span class="chip bg-color">usenix atc</span>
                     </a>
                     
                 </div>
@@ -567,13 +537,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/02/16/Webassembly/">
+                <a href="/2022/02/28/Chromium-Win32k-system-call-lockdown/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="Webassembly">
+                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="Chromium Win32k system call lockdown">
                         
-                        <span class="card-title">Webassembly</span>
+                        <span class="card-title">Chromium Win32k system call lockdown</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -584,16 +554,12 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-02-16
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-02-28
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/tech/" class="post-category">
-                                    tech
-                                </a>
-                            
+                            <i class="fas fa-user fa-fw"></i>
+                            zyscoder
                             
                         </span>
                     </div>
@@ -601,8 +567,24 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/wasm/">
-                        <span class="chip bg-color">wasm</span>
+                    <a href="/tags/browser/">
+                        <span class="chip bg-color">browser</span>
+                    </a>
+                    
+                    <a href="/tags/chrome/">
+                        <span class="chip bg-color">chrome</span>
+                    </a>
+                    
+                    <a href="/tags/windows/">
+                        <span class="chip bg-color">windows</span>
+                    </a>
+                    
+                    <a href="/tags/win32k/">
+                        <span class="chip bg-color">win32k</span>
+                    </a>
+                    
+                    <a href="/tags/win32k-lockdown/">
+                        <span class="chip bg-color">win32k lockdown</span>
                     </a>
                     
                 </div>

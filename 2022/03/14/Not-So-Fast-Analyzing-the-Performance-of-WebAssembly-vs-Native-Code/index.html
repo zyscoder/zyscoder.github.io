@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Browser Sandbox, zyscoder">
+    <meta name="keywords" content="Not So Fast: Analyzing the Performance of WebAssembly vs. Native Code, zyscoder">
     <meta name="description" content="Keep calm, and dream on.">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Browser Sandbox | zyscoder</title>
+    <title>Not So Fast: Analyzing the Performance of WebAssembly vs. Native Code | zyscoder</title>
     <link rel="icon" type="image/png" href="/medias/%E7%99%BD%E8%89%B2%E5%8F%B2%E8%8E%B1%E5%A7%86.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -203,12 +203,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/9.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/15.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Browser Sandbox</h1>
+                    <h1 class="description center-align post-title">Not So Fast: Analyzing the Performance of WebAssembly vs. Native Code</h1>
                 </div>
             </div>
         </div>
@@ -324,12 +324,16 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/browser/">
-                                <span class="chip bg-color">browser</span>
+                            <a href="/tags/wasm/">
+                                <span class="chip bg-color">wasm</span>
                             </a>
                         
-                            <a href="/tags/sandbox/">
-                                <span class="chip bg-color">sandbox</span>
+                            <a href="/tags/measurement/">
+                                <span class="chip bg-color">measurement</span>
+                            </a>
+                        
+                            <a href="/tags/usenix-atc/">
+                                <span class="chip bg-color">usenix atc</span>
                             </a>
                         
                     </div>
@@ -340,8 +344,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/tech/" class="post-category">
-                                tech
+                            <a href="/categories/paper/" class="post-category">
+                                paper
                             </a>
                         
                     </div>
@@ -353,7 +357,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-02-16
+                    2022-03-14
                 </div>
                 
 
@@ -374,29 +378,42 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="Browser-Sandbox"><a href="#Browser-Sandbox" class="headerlink" title="Browser Sandbox"></a>Browser Sandbox</h1><h2 id="Chrome-Sandbox-的构造"><a href="#Chrome-Sandbox-的构造" class="headerlink" title="Chrome Sandbox 的构造"></a><a target="_blank" rel="noopener" href="https://chromium.googlesource.com/chromium/src/+/master/docs/design/sandbox.md">Chrome Sandbox 的构造</a></h2><p>Sandbox在进程级的粒度上实现。任何需要被sandboxed的内容都需要被放到一个单独的进程中。sandbox的最小配置需要两个线程：一个是权限控制器<code>broker</code>；一个或者多个sandboxed进程<code>target</code>。<br>sandbox被实现成一个静态链接库被链接到broker和target的可执行文件中。</p>
-<h3 id="The-broker-process"><a href="#The-broker-process" class="headerlink" title="The broker process"></a>The broker process</h3><p>在Chromium中，broker通常是指browser进程。<br>广义上讲，broker是sandboxed进程的权限控制者&#x2F;监督者。broker的职责包括：</p>
+                <h1 id="Not-So-Fast-Analyzing-the-Performance-of-WebAssembly-vs-Native-Code"><a href="#Not-So-Fast-Analyzing-the-Performance-of-WebAssembly-vs-Native-Code" class="headerlink" title="Not So Fast: Analyzing the Performance of WebAssembly vs. Native Code"></a>Not So Fast: Analyzing the Performance of WebAssembly vs. Native Code</h1><h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><p>现有对WebAssembly的性能测试工作的结果都表明，WebAssembly相对Native Code的Overhead大概是10%左右。<br>然而，这些测量工作仅仅局限于在100行上下的科学计算程序的benchmark上进行评估，并不能完全反应WebAssembly的真实使用情况。<br>由于在浏览器的运行环境中并不存在标准Unix API的执行环境（因为sandbox啥的），因此将更多真实的程序编译成WebAssembly并在浏览器中执行并不可行。</p>
+<p>本文实现了一个叫<code>BROWSIX-WASM</code>的工具（基于emscripten，包括WebAssembly编译工具链 和 浏览器中system calls的执行环境两部分），让Unix应用程序可以不经修改编译成WebAssembly并在浏览器中执行。<br>本文在浏览器中对SPEC 2006 &amp; SPEC 2017进行了性能测量，发现相比Native Code，在Chrome和Firefox中分别有55%和45%的slowdown。</p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>WebAssembly文档突出了几个常用示例，包括科学计算、图像编辑、视频编辑、图像识别、科学可视化、模拟、编程语言解释器、虚拟机和POSIX应用程序。<br>然而当前的测量工作仅限于在科学计算的计算程序上进行（PolyBenchC Benchmarks），虽然得出和native code相比只有10%以下slowdown的强劲表现，但并不能完全反应WebAssembly的真实使用情况。</p>
+<p>SPEC CPU 2006&#x2F;2017 Benchmarks适合用于WebAssembly的性能评估，因为其中8个套件属于科学计算，2个套件属于图形&#x2F;视频处理，所有套件都是POSIX程序。<br>但是目前不大可能直接把SPEC测试套件编译成WebASsembly，因为这些测试套件需要一些系统服务，如文件系统、同步IO、进程调度等，WebAssembly和浏览器并不支持这些功能。<br>一种处理方式是直接修改测试套件的代码，然而这样不仅需要耗费大量时间，也会影响SPEC这种公认测试套件的有效性。</p>
+<p>目前一种标准做法是用<code>emscripten</code>来编译C&#x2F;C++成WebAssembly，但是emscripten只支持少数简单的系统调用，并不能扩展到大型应用程序。比如：为了支持同步IO（JavaScript只有异步IO），emscripten的MEMFS文件系统需要将整个文件系统镜像加预加载到内存中，非常占内存。</p>
+<p>一个替代方案是<code>BROWSIX</code>，这是一个将未经修改的、full-featured Unix的应用程序运行到浏览器中的框架。BROWSIX实现了一个JavaScript可用的Unix kernel，对进程、文件、管道、阻塞IO以及其他Unix特性进行了全支持。<br>此外，它还包含了一个C++编译器（基于Emscripten）。<br>然而BROWSIX只支持JavaScript，并不支持WebAssembly。此外，BROWSIX还存在性能开销大的问题，这会影响对WebAssembly性能测试的结果（到底是WebAssembly自己慢，还是BROWSIX慢）。</p>
+<p>Contribution：</p>
+<ul>
+<li>本文实现了一个BROWSIX-WASM，可以将Unix应用程序不经修改的编译成WebAssembly，并在浏览器环境下执行；</li>
+<li>本文开发了BROWSIX-SPEC，它扩展了BROWSIX-WASM，允许自动收集详细的定时和硬件芯片性能计数器信息，以便对应用程序性能进行详细测量；</li>
+<li>在SPEC CPU 2006和2017上评估了WebAssembly的性能。相比JavaScript，wasm速度快1.3倍；但相比native code，wasm在Chrome和Firefox中的平均slowdown为55%和45%；</li>
+<li>对WebAssembly的性能瓶颈进行了分析：<ul>
+<li>与Native Code相比，WebAssembly有更大的寄存器压力：<ul>
+<li>浏览器有两个保留寄存器，被用于GC等，导致WebASsembly的代码可用的寄存器数量更少；</li>
+<li>浏览器中WebASsembly编译出来的机器码，对寄存器的分配方式更烂。clang用贪心着色法进行寄存器分配，而浏览器采用线性扫描的方法进行寄存器分配；</li>
+<li>浏览器中对x86丰富的寄存器寻址方式（间接寻址、直接寻址等）并没有充分利用，导致编译出来的代码速度慢；</li>
+</ul>
+</li>
+<li>WebAssembly编译器的优化不够，导致编译出来的代码有更多无用的跳转。此外wasm本身为了做栈溢出检查、函数跳转目标检查（CFI？）等安全检查，此外这些检查导致分支跳转也更多，导致L1 cache miss率增加。</li>
+<li>为了安全检查，WebAssembly编译时额外插入了更多的代码；</li>
+</ul>
+</li>
+</ul>
+<p>*** PS：详细评估见论文 ***</p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>总的来说，WebAssembly相对JavaScript确实快，但是相比Native Code并没有夸得那么好。</p>
+<p>从瓶颈上来讲，有的原因是无法避免的：</p>
 <ol>
-<li>为每个target进程指定策略</li>
-<li>生成target进程</li>
-<li>托管sandbox policy engine</li>
-<li>托管sandbox interception manager</li>
-<li>托管到target进程的sandbox IPC 服务</li>
-<li>代表target进程执行策略允许的操作</li>
+<li>由于浏览器保留寄存器导致可用的寄存器数量减少；</li>
+<li>由于安全检查引入更多的代码量和更多的分支跳转；</li>
 </ol>
-<p>Broker进程要比所有它派生的target进程都长寿。sandbox IPC不同于chromium的IPC，是一个low-level的机制，用于将来自target的Windows API调用透明地传送给broker。这些API调用根据策略进行评估后，被策略允许的调用由broker执行，然后broker经由相同的IPC将执行结果返还给target。<br>其中，拦截器（interceptions manager）被用于分发需要从IPC发送给broker的Windows API调用。</p>
-<h3 id="The-target-process"><a href="#The-target-process" class="headerlink" title="The target process"></a>The target process</h3><p>在Chromium中，renderer经常被作为target进程，除非在browser进程启动时加了–no-sandbox的命令行。target进程承载了所有即将在sandbox内部执行的代码，以及sandbox本身的基础设施客户端：</p>
+<p>但其他原因是可以改进的：</p>
 <ol>
-<li>所有sandboxed的代码</li>
-<li>The sandbox IPC client</li>
-<li>The sandbox policy engine client</li>
-<li>The sandbox interceptions</li>
-<li>第2,3,4都是被链接进来的sandbox静态库的一部分。</li>
+<li>优化寄存器分配算法；</li>
+<li>寄存器寻址方式优化；</li>
+<li>代码优化，减少无用的分支跳转；</li>
 </ol>
-<p>Interceptions&#x2F;hooks负责将target的Windows API调用通过sandbox IPC发送给broker。之后，broker会重新发起相同的API调用并返回target执行结果，或者直接返回一个调用错误。<br>interception + IPC 机制并不提供安全性; 它的设计是用于当sandboxed code无法修改时，增强sandbox本身的兼容性。为了减少不必要的IPC，target进程在发起IPC通信前中也会进行一次policy的评估，这不提供安全性保证，但能尽可能地优化速度。<br>在未来，大多数的插件都将被运行在sandbox的target进程中。</p>
-<p><img src="/../medias/Chrome%20Sandbox%20Architecture.png" alt="Chrome Sandbox Architecture"></p>
-<h2 id="相关研究"><a href="#相关研究" class="headerlink" title="相关研究"></a>相关研究</h2><p><a target="_blank" rel="noopener" href="https://powerofcommunity.net/poc2018/ned.pdf">Exploiting Chrome IPC</a><br><a target="_blank" rel="noopener" href="https://blog.ret2.io/2018/07/25/pwn2own-2018-safari-sandbox/">Cracking the Walls of the Safari Sandbox</a></p>
-<h2 id="其他资料"><a href="#其他资料" class="headerlink" title="其他资料"></a>其他资料</h2><p><a target="_blank" rel="noopener" href="https://stackify.dev/776744-using-the-google-chrome-sandbox">如何借用chrome sandbox</a><br><a target="_blank" rel="noopener" href="https://medium.com/swlh/my-take-on-chrome-sandbox-escape-exploit-chain-dbf5a616eec5">Chrome Sandbox Escape Exploit Chain</a></p>
 
                 
             </div>
@@ -423,7 +440,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://zyscoder.github.io/2022/02/16/Browser-Sandbox/">https://zyscoder.github.io/2022/02/16/Browser-Sandbox/</a>
+                    <a href="https://zyscoder.github.io/2022/03/14/Not-So-Fast-Analyzing-the-Performance-of-WebAssembly-vs-Native-Code/">https://zyscoder.github.io/2022/03/14/Not-So-Fast-Analyzing-the-Performance-of-WebAssembly-vs-Native-Code/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -461,12 +478,16 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/browser/">
-                                    <span class="chip bg-color">browser</span>
+                                <a href="/tags/wasm/">
+                                    <span class="chip bg-color">wasm</span>
                                 </a>
                             
-                                <a href="/tags/sandbox/">
-                                    <span class="chip bg-color">sandbox</span>
+                                <a href="/tags/measurement/">
+                                    <span class="chip bg-color">measurement</span>
+                                </a>
+                            
+                                <a href="/tags/usenix-atc/">
+                                    <span class="chip bg-color">usenix atc</span>
                                 </a>
                             
                         </div>
@@ -510,17 +531,18 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2022/02/16/Browser-User-Interface/">
+                <a href="/2022/03/14/Not-So-Fast-Analyzing-the-Performance-of-WebAssembly-vs-Native-Code/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="Browser User Interface">
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="Not So Fast: Analyzing the Performance of WebAssembly vs. Native Code">
                         
-                        <span class="card-title">Browser User Interface</span>
+                        <span class="card-title">Not So Fast: Analyzing the Performance of WebAssembly vs. Native Code</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -530,30 +552,35 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-02-16
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-03-14
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/tech/" class="post-category">
-                                    tech
+                            <a href="/categories/paper/" class="post-category">
+                                    paper
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/browser/">
-                        <span class="chip bg-color">browser</span>
+                    <a href="/tags/wasm/">
+                        <span class="chip bg-color">wasm</span>
                     </a>
                     
-                    <a href="/tags/ui/">
-                        <span class="chip bg-color">ui</span>
+                    <a href="/tags/measurement/">
+                        <span class="chip bg-color">measurement</span>
+                    </a>
+                    
+                    <a href="/tags/usenix-atc/">
+                        <span class="chip bg-color">usenix atc</span>
                     </a>
                     
                 </div>
@@ -567,13 +594,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/02/16/Webassembly/">
+                <a href="/2022/03/03/Resources/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="Webassembly">
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="Resources">
                         
-                        <span class="card-title">Webassembly</span>
+                        <span class="card-title">Resources</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -584,16 +611,12 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-02-16
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-03-03
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/tech/" class="post-category">
-                                    tech
-                                </a>
-                            
+                            <i class="fas fa-user fa-fw"></i>
+                            zyscoder
                             
                         </span>
                     </div>
@@ -601,8 +624,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/wasm/">
-                        <span class="chip bg-color">wasm</span>
+                    <a href="/tags/Resources/">
+                        <span class="chip bg-color">Resources</span>
                     </a>
                     
                 </div>

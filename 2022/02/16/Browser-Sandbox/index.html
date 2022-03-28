@@ -396,7 +396,7 @@
 <p>Interceptions&#x2F;hooks负责将target的Windows API调用通过sandbox IPC发送给broker。之后，broker会重新发起相同的API调用并返回target执行结果，或者直接返回一个调用错误。<br>interception + IPC 机制并不提供安全性; 它的设计是用于当sandboxed code无法修改时，增强sandbox本身的兼容性。为了减少不必要的IPC，target进程在发起IPC通信前中也会进行一次policy的评估，这不提供安全性保证，但能尽可能地优化速度。<br>在未来，大多数的插件都将被运行在sandbox的target进程中。</p>
 <p><img src="/../medias/Chrome%20Sandbox%20Architecture.png" alt="Chrome Sandbox Architecture"></p>
 <h2 id="相关研究"><a href="#相关研究" class="headerlink" title="相关研究"></a>相关研究</h2><p><a target="_blank" rel="noopener" href="https://powerofcommunity.net/poc2018/ned.pdf">Exploiting Chrome IPC</a><br><a target="_blank" rel="noopener" href="https://blog.ret2.io/2018/07/25/pwn2own-2018-safari-sandbox/">Cracking the Walls of the Safari Sandbox</a></p>
-<h2 id="其他资料"><a href="#其他资料" class="headerlink" title="其他资料"></a>其他资料</h2><p><a target="_blank" rel="noopener" href="https://stackify.dev/776744-using-the-google-chrome-sandbox">如何借用chrome sandbox</a><br><a target="_blank" rel="noopener" href="https://medium.com/swlh/my-take-on-chrome-sandbox-escape-exploit-chain-dbf5a616eec5">Chrome Sandbox Escape Exploit Chain</a></p>
+<h2 id="其他资料"><a href="#其他资料" class="headerlink" title="其他资料"></a>其他资料</h2><p><a target="_blank" rel="noopener" href="https://stackify.dev/776744-using-the-google-chrome-sandbox">如何借用chrome sandbox</a><br><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/1590337/using-the-google-chrome-sandbox">如何调用chrome sandbox</a><br><a target="_blank" rel="noopener" href="https://medium.com/swlh/my-take-on-chrome-sandbox-escape-exploit-chain-dbf5a616eec5">Chrome Sandbox Escape Exploit Chain</a></p>
 
                 
             </div>

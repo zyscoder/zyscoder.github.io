@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Browser User Interface, zyscoder">
+    <meta name="keywords" content="Windows Access Control Lists (ACL), zyscoder">
     <meta name="description" content="Keep calm, and dream on.">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Browser User Interface | zyscoder</title>
+    <title>Windows Access Control Lists (ACL) | zyscoder</title>
     <link rel="icon" type="image/png" href="/medias/%E7%99%BD%E8%89%B2%E5%8F%B2%E8%8E%B1%E5%A7%86.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -203,12 +203,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/4.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/6.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Browser User Interface</h1>
+                    <h1 class="description center-align post-title">Windows Access Control Lists (ACL)</h1>
                 </div>
             </div>
         </div>
@@ -324,12 +324,12 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/browser/">
-                                <span class="chip bg-color">browser</span>
+                            <a href="/tags/windows/">
+                                <span class="chip bg-color">windows</span>
                             </a>
                         
-                            <a href="/tags/ui/">
-                                <span class="chip bg-color">ui</span>
+                            <a href="/tags/ACL/">
+                                <span class="chip bg-color">ACL</span>
                             </a>
                         
                     </div>
@@ -353,7 +353,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-02-16
+                    2022-04-02
                 </div>
                 
 
@@ -374,20 +374,10 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="Browser-User-Interface"><a href="#Browser-User-Interface" class="headerlink" title="Browser User Interface"></a>Browser User Interface</h1><h2 id="相关研究-amp-工具"><a href="#相关研究-amp-工具" class="headerlink" title="相关研究 &amp; 工具"></a>相关研究 &amp; 工具</h2><ul>
-<li>Browser to User:<ul>
-<li><a target="_blank" rel="noopener" href="https://xlab.tencent.com/cn/2017/10/16/browser-ui-security-whitepaper/">Browser UI Security 技术白皮书</a></li>
-<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/32043215">绕过弹出窗口拦截器</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.inforsec.org/wp/?p=2715">Hindsight: Understanding the Evolution of UI Vulnerabilities in Mobile Browsers</a></li>
-</ul>
-</li>
-<li>User to Browser:<ul>
-<li><a target="_blank" rel="noopener" href="https://github.com/diiq/frontend-fuzzer">frontend-fuzzer</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/GeoffWalton/SPAnalyzer">SPAnalyzer</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/cbowen/p/13217857.html">WebDriver使用</a></li>
-</ul>
-</li>
-</ul>
+                <h1 id="Windows-Access-Control-Lists-ACL"><a href="#Windows-Access-Control-Lists-ACL" class="headerlink" title="Windows Access Control Lists (ACL)"></a>Windows Access Control Lists (ACL)</h1><p>ACL是ACE的列表。<br>ACL中的每条ACE标识一个受信者，并指定该受信者允许、拒绝或审核的访问权限。安全对象的安全描述符可以包含两种类型的ACL：DACL和SACL。<br>自主访问控制列表（DACL）标识【被允许】或【被拒绝】访问安全对象的受托人。<br>当一个进程试图访问一个安全对象时，系统会检查该对象的DACL中的ACE，以确定是否授予对该对象的访问权限。<br>如果对象没有DACL，系统将授予每个人完全访问权限。<br>如果对象有DACL没有ACE，系统会拒绝所有访问该对象的尝试，因为DACL不允许任何访问权限。<br>系统按顺序检查ACE，直到找到一个或多个允许请求的访问权限的ACE，或者直到请求的访问权限全被拒绝。</p>
+<p>系统访问控制列表（SACL）使管理员能够记录受保护对象的所有访问。每个ACE指定受信者访问的类型，这些访问会在系统安全事件日志中生成记录。<br>SACL中的ACE可以在访问尝试失败或成功生成审核记录。</p>
+<p>不要试图直接使用ACL的内容。<br>为确保ACL在语义上正确，请使用适当的函数来创建和操作ACL。</p>
+<h2 id="安全对象"><a href="#安全对象" class="headerlink" title="安全对象"></a>安全对象</h2><p>安全对象是可以具有安全描述符的对象。<br>所有命名的Windows对象都是安全的。<br>一些未命名的对象（例如进程和线程对象）也可以具有安全描述符。<br>对于大多数安全对象，您可以在创建对象的函数调用中指定对象的安全描述符。<br>例如，您可以在CreateFile和CreateProcess函数中指定安全描述符。</p>
 
                 
             </div>
@@ -414,7 +404,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://zyscoder.github.io/2022/02/16/Browser-User-Interface/">https://zyscoder.github.io/2022/02/16/Browser-User-Interface/</a>
+                    <a href="https://zyscoder.github.io/2022/04/02/Windows-Access-Control-Lists-ACL/">https://zyscoder.github.io/2022/04/02/Windows-Access-Control-Lists-ACL/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -452,12 +442,12 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/browser/">
-                                    <span class="chip bg-color">browser</span>
+                                <a href="/tags/windows/">
+                                    <span class="chip bg-color">windows</span>
                                 </a>
                             
-                                <a href="/tags/ui/">
-                                    <span class="chip bg-color">ui</span>
+                                <a href="/tags/ACL/">
+                                    <span class="chip bg-color">ACL</span>
                                 </a>
                             
                         </div>
@@ -501,17 +491,18 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2022/02/18/Chapter-1-of-The-Story-of-Bible/">
+                <a href="/2022/04/02/Windows-Access-Control-Lists-ACL/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="Chapter 1 of &#34;The Story of the Bible&#34;">
+                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="Windows Access Control Lists (ACL)">
                         
-                        <span class="card-title">Chapter 1 of &#34;The Story of the Bible&#34;</span>
+                        <span class="card-title">Windows Access Control Lists (ACL)</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -521,30 +512,31 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-02-18
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-04-02
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/reading/" class="post-category">
-                                    reading
+                            <a href="/categories/tech/" class="post-category">
+                                    tech
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/bible/">
-                        <span class="chip bg-color">bible</span>
+                    <a href="/tags/windows/">
+                        <span class="chip bg-color">windows</span>
                     </a>
                     
-                    <a href="/tags/The-Story-of-the-Bible/">
-                        <span class="chip bg-color">The Story of the Bible</span>
+                    <a href="/tags/ACL/">
+                        <span class="chip bg-color">ACL</span>
                     </a>
                     
                 </div>
@@ -558,13 +550,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/02/16/Chrome-Sandbox/">
+                <a href="/2022/03/28/Ninja/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="Browser Sandbox">
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="Ninja &amp; GN">
                         
-                        <span class="card-title">Browser Sandbox</span>
+                        <span class="card-title">Ninja &amp; GN</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -575,7 +567,7 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-02-16
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-03-28
                             </span>
                         <span class="publish-author">
                             
@@ -592,16 +584,12 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/browser/">
-                        <span class="chip bg-color">browser</span>
+                    <a href="/tags/ninja/">
+                        <span class="chip bg-color">ninja</span>
                     </a>
                     
-                    <a href="/tags/sandbox/">
-                        <span class="chip bg-color">sandbox</span>
-                    </a>
-                    
-                    <a href="/tags/chrome/">
-                        <span class="chip bg-color">chrome</span>
+                    <a href="/tags/build-tool/">
+                        <span class="chip bg-color">build tool</span>
                     </a>
                     
                 </div>

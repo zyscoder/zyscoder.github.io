@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Codeforces Round 908 (Div. 2)-A. Secret Sport, zyscoder">
+    <meta name="keywords" content="Codeforces Round 908 (Div. 2)-B. Two Out of Three, zyscoder">
     <meta name="description" content="Keep calm, and dream on.">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Codeforces Round 908 (Div. 2)-A. Secret Sport | zyscoder</title>
+    <title>Codeforces Round 908 (Div. 2)-B. Two Out of Three | zyscoder</title>
     <link rel="icon" type="image/png" href="/medias/%E7%99%BD%E8%89%B2%E5%8F%B2%E8%8E%B1%E5%A7%86.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -203,12 +203,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/8.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Codeforces Round 908 (Div. 2)-A. Secret Sport</h1>
+                    <h1 class="description center-align post-title">Codeforces Round 908 (Div. 2)-B. Two Out of Three</h1>
                 </div>
             </div>
         </div>
@@ -370,12 +370,31 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a><a target="_blank" rel="noopener" href="https://codeforces.com/contest/1894/problem/A">题目</a></h1><p>两个人A、B玩游戏（局&lt;轮&lt;次），每次有一个胜利方，游戏设定两个数X和Y。<br>游戏判定最终输赢的方式为：在某一轮游戏中，当其中一人首先赢得X局胜利，则判定其这一轮取得胜利；当其中一人首先赢得Y轮胜利，则其为本次游戏最终胜利方。</p>
-<p>现给出A和B每次游戏的全部n局胜负结果，且保证该结果必定是某一次游戏的完整结果。在不知道X和Y的前提下，判断这次游戏的获胜方是A还是B。若条件不足无法判断，则输出?。</p>
-<h1 id="题意解析"><a href="#题意解析" class="headerlink" title="题意解析"></a>题意解析</h1><h2 id="方法一："><a href="#方法一：" class="headerlink" title="方法一："></a>方法一：</h2><p>由于题目给定n&lt;&#x3D;20, 且X&lt;&#x3D;n, Y&lt;&#x3D;n, X*Y&lt;&#x3D;n。因此可以直接暴力枚举所有的X和Y的组合，并判断每种X和Y组合的情况下，胜利方是谁。如果所有X和Y的合理组合下，得到的胜利方都是同一人，则得出答案；若两人都有可能是最终胜利方，则无法判断最后结果。</p>
-<h2 id="方法二："><a href="#方法二：" class="headerlink" title="方法二："></a>方法二：</h2><p>年纪大了加上多年不做题，完全丧失对题面的敏感度QAQ。本题的大堆设定都是在混淆视听，唯一需要注意的是这句话: “It is guaranteed that the given sequence of plays corresponds to at least one valid game scenario, for some values of 𝑋and 𝑌.”</p>
-<p>因此，本次游戏的最后一局取得胜利的那个人，一定就是本次游戏最后的胜利方。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">// It is guaranteed that the given sequence of plays corresponds to at least one valid game scenario, for some values of 𝑋 and 𝑌.</span><br><span class="line"></span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;string&gt;</span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">int main() &#123;</span><br><span class="line">    int t;</span><br><span class="line">    cin &gt;&gt; t;</span><br><span class="line">    while (t--) &#123;</span><br><span class="line">        int n;</span><br><span class="line">        string str;</span><br><span class="line">        cin &gt;&gt; n;</span><br><span class="line">        cin &gt;&gt; str;</span><br><span class="line">        cout &lt;&lt; str[n - 1] &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+                <hr>
+<p>title: Codeforces Round 908 (Div. 2)-A. Secret Sport<br>tags:</p>
+<ul>
+<li>Codeforces<br>categories:</li>
+<li>algorithm<br>date: 2023-11-24 12:07:25</li>
+</ul>
+<hr>
+<h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a><a target="_blank" rel="noopener" href="https://codeforces.com/contest/1894/problem/B">题目</a></h1><p>给定一个A数组a1, a2, …, an (n&lt;&#x3D;500)。让输出一个B数组b1, b2, …, bn，其中B的所有元素只能是1，2，3，且满足以下三个条件，有且只有2个条件得到满足：</p>
+<ol>
+<li>存在1&lt;&#x3D; i, j &lt;&#x3D; n，使得ai&#x3D;&#x3D;aj，且bi&#x3D;&#x3D;1，bj&#x3D;&#x3D;2;</li>
+<li>存在1&lt;&#x3D; i, j &lt;&#x3D; n，使得ai&#x3D;&#x3D;aj，且bi&#x3D;&#x3D;1，bj&#x3D;&#x3D;3;</li>
+<li>存在1&lt;&#x3D; i, j &lt;&#x3D; n，使得ai&#x3D;&#x3D;aj，且bi&#x3D;&#x3D;2，bj&#x3D;&#x3D;3;</li>
+</ol>
+<h1 id="题意解析"><a href="#题意解析" class="headerlink" title="题意解析"></a>题意解析</h1><p>由于上述三个条件中，b的值1，2，3完全循环对称，因此三个条件完全可以等价互换。因此可以直接粗暴地设定前两个条件满足，第三个条件不满足。</p>
+<p>把A数组所有元素分组，每一组中的a元素彼此相等。<br>现在给每一组a元素分配对应的b元素，为了让上述条件满足&#x2F;不满足：</p>
+<ol>
+<li>同一组中的a被分配的b，不能同时出现1，2，3，否则上述三个条件将同时满足；</li>
+<li>为了让前两个条件得到满足，至少需要2个分组的size&gt;&#x3D;2。<ul>
+<li>给第一个分组的a元素分配1，2的b元素；</li>
+<li>给第二个分组的a元素分配1，3的b元素；</li>
+</ul>
+</li>
+</ol>
+<p>至此搞定。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">int main() &#123;</span><br><span class="line"></span><br><span class="line">    int t;</span><br><span class="line">    cin &gt;&gt; t;</span><br><span class="line">    while (t--) &#123;</span><br><span class="line">        int n;</span><br><span class="line">        cin &gt;&gt; n;</span><br><span class="line">        int a[105], b[105];</span><br><span class="line">        int group = 0, mark = 2;</span><br><span class="line">        for (int i = 1; i &lt;= n; i++) cin &gt;&gt; a[i];</span><br><span class="line">        memset(b, -1, sizeof(b));</span><br><span class="line">        for (int i = 1; i &lt;= n; i++) &#123;</span><br><span class="line">            if (b[i] != -1) continue;</span><br><span class="line">            b[i] = 1;</span><br><span class="line">            int samewithme = 0;</span><br><span class="line">            for (int j = i + 1; j &lt;= n; j++) &#123;</span><br><span class="line">                if (a[i] == a[j]) &#123;</span><br><span class="line">                    b[j] = mark;</span><br><span class="line">                    samewithme ++;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            if (samewithme) &#123;</span><br><span class="line">                group += 1;</span><br><span class="line">                mark = (mark == 2)? 3: 2;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        if (group &lt; 2) cout &lt;&lt; &quot;-1&quot; &lt;&lt; endl;</span><br><span class="line">        else &#123;</span><br><span class="line">            for (int i = 1; i &lt;= n; i++) cout &lt;&lt; b[i] &lt;&lt; &quot; &quot;;</span><br><span class="line">            cout &lt;&lt; endl;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
                 
             </div>
             <hr/>
@@ -401,7 +420,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://zyscoder.github.io/2023/11/24/Codeforces-Round-908-Div-2-A-Secret-Sport/">https://zyscoder.github.io/2023/11/24/Codeforces-Round-908-Div-2-A-Secret-Sport/</a>
+                    <a href="https://zyscoder.github.io/2023/11/24/Codeforces-Round-908-Div-2-B-Two-Out-of-Three/">https://zyscoder.github.io/2023/11/24/Codeforces-Round-908-Div-2-B-Two-Out-of-Three/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -484,9 +503,10 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2023/11/24/Codeforces-Round-908-Div-2-B-Two-Out-of-Three/">
                     <div class="card-image">
@@ -504,9 +524,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2023-11-24
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-11-24
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -519,6 +539,7 @@
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -537,13 +558,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/04/02/Windows-Access-Control-Lists-ACL/">
+                <a href="/2023/11/24/Codeforces-Round-908-Div-2-A-Secret-Sport/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="Windows Access Control Lists (ACL)">
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="Codeforces Round 908 (Div. 2)-A. Secret Sport">
                         
-                        <span class="card-title">Windows Access Control Lists (ACL)</span>
+                        <span class="card-title">Codeforces Round 908 (Div. 2)-A. Secret Sport</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -554,14 +575,14 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-04-02
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-11-24
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/tech/" class="post-category">
-                                    tech
+                            <a href="/categories/algorithm/" class="post-category">
+                                    algorithm
                                 </a>
                             
                             
@@ -571,12 +592,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/windows/">
-                        <span class="chip bg-color">windows</span>
-                    </a>
-                    
-                    <a href="/tags/ACL/">
-                        <span class="chip bg-color">ACL</span>
+                    <a href="/tags/Codeforces/">
+                        <span class="chip bg-color">Codeforces</span>
                     </a>
                     
                 </div>

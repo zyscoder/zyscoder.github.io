@@ -374,7 +374,7 @@
 <p>给定m个multiset：set1, set2, …, setm。<br>每个集合seti中，存在 ni 个彼此不同的元素   a1, a2, …, ani。<br>每个集合seti中，彼此不同的元素出现的次数为  c1, c2, …, cni。</p>
 <p>现在从m个集合中选择元素组成一个新的multiset X，要求从每个集合seti中取出的元素个数为[li, ri]。<br>要求使得最后的X的anti-beauty值最小，求出这个最小的anti-beauty是多少。</p>
 <p>题目保证sum(ni) &lt;&#x3D; 1e5。</p>
-<h1 id="题意解析"><a href="#题意解析" class="headerlink" title="题意解析"></a>题意解析</h1><p>据题，如果X的anti-beauty不为0，设其长度为len，则X中一定存在元素len。<br>由于X中所有元素都来源于m个multiset（m&lt;&#x3D;1e5），即此时必然存在m个multiset中的一个ai，使得ai&#x3D;&#x3D;len。</p>
+<h1 id="题意解析"><a href="#题意解析" class="headerlink" title="题意解析"></a>题意解析</h1><p>据题，如果X的anti-beauty不为0，设其长度为len，则X中一定存在元素len。<br>由于X中所有元素都来源于m个multiset（m&lt;&#x3D;1e5），即此时m个multiset中必然存在一个ai，使得ai&#x3D;&#x3D;len。</p>
 <p>设L &#x3D; l1 + l2 + … + lm，R &#x3D; r1 + r2 + … + rm。<br>那么X的长度len可以取到[L, R]中的任意值。</p>
 <ol>
 <li>如果存在一个len (L &lt;&#x3D; len &lt;&#x3D; R)，在m个multiset中都不存在这样的元素a&#x3D;&#x3D;len，那么只要将X的长度取为len，就可以让其anti-beauty&#x3D;0；</li>

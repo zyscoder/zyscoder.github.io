@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Webassembly, zyscoder">
+    <meta name="keywords" content="Codeforces Round 908 (Div. 2)-A. Secret Sport, zyscoder">
     <meta name="description" content="Keep calm, and dream on.">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Webassembly | zyscoder</title>
+    <title>Codeforces Round 908 (Div. 2)-A. Secret Sport | zyscoder</title>
     <link rel="icon" type="image/png" href="/medias/%E7%99%BD%E8%89%B2%E5%8F%B2%E8%8E%B1%E5%A7%86.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -203,12 +203,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/22.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Webassembly</h1>
+                    <h1 class="description center-align post-title">Codeforces Round 908 (Div. 2)-A. Secret Sport</h1>
                 </div>
             </div>
         </div>
@@ -324,8 +324,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/wasm/">
-                                <span class="chip bg-color">wasm</span>
+                            <a href="/tags/Codeforces/">
+                                <span class="chip bg-color">Codeforces</span>
                             </a>
                         
                     </div>
@@ -336,8 +336,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/tech/" class="post-category">
-                                tech
+                            <a href="/categories/algorithm/" class="post-category">
+                                algorithm
                             </a>
                         
                     </div>
@@ -349,7 +349,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-02-16
+                    2023-11-24
                 </div>
                 
 
@@ -370,30 +370,12 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="Webassembly-杂谈"><a href="#Webassembly-杂谈" class="headerlink" title="Webassembly 杂谈"></a>Webassembly 杂谈</h1><h2 id="Webassmebly-由来"><a href="#Webassmebly-由来" class="headerlink" title="Webassmebly 由来"></a><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/68048524">Webassmebly 由来</a></h2><h3 id="JavaScript-缺少静态类型"><a href="#JavaScript-缺少静态类型" class="headerlink" title="JavaScript 缺少静态类型"></a>JavaScript 缺少静态类型</h3><p>但是除了逻辑复杂、代码量大，还有另一个原因是JavaScript这门语言本身的缺陷，JavaScript没有静态变量类型。这门解释型编程语言的作者Brendan Eich，仓促的创造了这门如果被广泛使用的语言，以至于JavaScript的发展史甚至在某种层面上变成了填坑史。为什么说没有静态类型会降低效率。这会涉及到一些JavaScript引擎的一些知识。</p>
-<p>我们来看一看我们的JavaScript代码在引擎中会经历什么。</p>
-<ul>
-<li>JavaScript文件会被下载下来。</li>
-<li>然后进入Parser，Parser会把代码转化成AST（抽象语法树）.</li>
-<li>然后根据抽象语法树，Bytecode Compiler字节码编译器会生成引擎能够直- 接阅读、执行的字节码。</li>
-<li>字节码进入翻译器，将字节码一行一行的翻译成效率十分高的Machine Code.</li>
-</ul>
-<p>在项目运行的过程中，引擎会对执行次数较多的function记性优化，引擎将其代码编译成Machine Code后打包送到顶部的Just-In-Time(JIT) Compiler，下次再执行这个function，就会直接执行编译好的Machine Code。但是由于JavaScript的动态变量，上一秒可能是Array，下一秒就变成了Object。那么上一次引擎所做的优化，就失去了作用，此时又要再一次进行优化。</p>
-<h3 id="asm-js强制静态类型"><a href="#asm-js强制静态类型" class="headerlink" title="asm.js强制静态类型"></a>asm.js强制静态类型</h3><p>所以为了解决静态类型的问题，WebAssembly的前身，asm.js诞生了。asm.js是一个Javascript的严格子集，合理合法的asm.js代码一定是合理合法的JavaScript代码，但是反之就不成立。同WebAssembly一样，asm.js不是用来给各位用手一行一行撸的代码，asm.js是一个编译目标。它的可读性、可读性虽然比WebAssembly好，但是对于开发者来说，仍然是无法接受的。<br>asm.js强制静态类型，举个例子。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">asmJs</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="string">&#x27;use asm&#x27;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> myInt = <span class="number">0</span> | <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">let</span> myDouble = +<span class="number">1.1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>为什么asm.js会有静态类型呢？因为像0 | 0这样的，代表这是一个Int的数据，而+1.1则代表这是一个Double的数据。</p>
-<h3 id="但asm-js不能解决所有的问题"><a href="#但asm-js不能解决所有的问题" class="headerlink" title="但asm.js不能解决所有的问题"></a>但asm.js不能解决所有的问题</h3><p>可能有人有疑问，这问题不是解决了吗？那为什么会有WebAssembly？WebAssembly又解决了什么问题？大家可以再看一下上面的ChakraCore的引擎结构。无论asm.js对静态类型的问题做的再好，它始终逃不过要经过Parser，要经过ByteCode Compiler，而这两步是JavaScript代码在引擎执行过程当中消耗时间最多的两步。而WebAssembly不用经过这两步。这就是WebAssembly比asm.js更快的原因。</p>
-<h2 id="一些资料"><a href="#一些资料" class="headerlink" title="一些资料"></a>一些资料</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/WebAssembly/Concepts">Webassembly 概念</a></li>
-<li><img src="/../medias/webassembly%20engine%20and%20Javascript%20engine.png" alt="Relationship between Webassembly engine and JavaScript engine" title="Relationship between Webassembly engine and JavaScript engine"><br><a target="_blank" rel="noopener" href="https://gitbook.cn/gitchat/geekbook/5a7fe8eb194d786ae0b18956/topic/5a80399b194d786ae0b19694">the reference of the figure</a></li>
-<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/25754084">Webassembly with Clang+LLVM</a></li>
-<li><img src="/../medias/LLVM%20IR%20to%20WASM.png" alt="LLVM IR to WASM" title="LLVM IR to WASM"></li>
-<li><img src="/../medias/LLVM%20IR%20to%20WASM%202.png" alt="LLVM IR to WASM 2" title="LLVM IR to WASM 2"></li>
-<li><a target="_blank" rel="noopener" href="https://webassembly.org/roadmap/">Popular Webassembly Engines</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/appcypher/awesome-wasm-runtimes">Awesome wasm runtimes</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/appcypher/awesome-wasm-langs">Awesome wasm languages</a></li>
-</ul>
-
+                <h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a><a target="_blank" rel="noopener" href="https://codeforces.com/contest/1894/problem/A">题目</a></h1><p>两个人A、B玩游戏（局&lt;轮&lt;次），每次有一个胜利方，游戏设定两个数X和Y。<br>游戏判定最终输赢的方式为：在某一轮游戏中，当其中一人首先赢得X局胜利，则判定其这一轮取得胜利；当其中一人首先赢得Y轮胜利，则其为本次游戏最终胜利方。</p>
+<p>现给出A和B每次游戏的全部n局胜负结果，且保证该结果必定是某一次游戏的完整结果。在不知道X和Y的前提下，判断这次游戏的获胜方是A还是B。若条件不足无法判断，则输出?。</p>
+<h1 id="题意解析"><a href="#题意解析" class="headerlink" title="题意解析"></a>题意解析</h1><h2 id="方法一："><a href="#方法一：" class="headerlink" title="方法一："></a>方法一：</h2><p>由于题目给定n&lt;&#x3D;20, 且X&lt;&#x3D;n, Y&lt;&#x3D;n, X*Y&lt;&#x3D;n。因此可以直接暴力枚举所有的X和Y的组合，并判断每种X和Y组合的情况下，胜利方是谁。如果所有X和Y的合理组合下，得到的胜利方都是同一人，则得出答案；若两人都有可能是最终胜利方，则无法判断最后结果。</p>
+<h2 id="方法二："><a href="#方法二：" class="headerlink" title="方法二："></a>方法二：</h2><p>年纪大了加上多年不做题，完全丧失对题面的敏感度QAQ。本题的大堆设定都是在混淆视听，唯一需要注意的是这句话: “It is guaranteed that the given sequence of plays corresponds to at least one valid game scenario, for some values of 𝑋and 𝑌.”</p>
+<p>因此，本次游戏的最后一局取得胜利的那个人，一定就是本次游戏最后的胜利方。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">// It is guaranteed that the given sequence of plays corresponds to at least one valid game scenario, for some values of 𝑋 and 𝑌.</span><br><span class="line"></span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;string&gt;</span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">int main() &#123;</span><br><span class="line">    int t;</span><br><span class="line">    cin &gt;&gt; t;</span><br><span class="line">    while (t--) &#123;</span><br><span class="line">        int n;</span><br><span class="line">        string str;</span><br><span class="line">        cin &gt;&gt; n;</span><br><span class="line">        cin &gt;&gt; str;</span><br><span class="line">        cout &lt;&lt; str[n - 1] &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
                 
             </div>
             <hr/>
@@ -419,7 +401,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://zyscoder.github.io/2022/02/16/Webassembly/">https://zyscoder.github.io/2022/02/16/Webassembly/</a>
+                    <a href="https://zyscoder.github.io/2023/11/24/Codeforces-Round-908-Div-2-A-Secret-Sport/">https://zyscoder.github.io/2023/11/24/Codeforces-Round-908-Div-2-A-Secret-Sport/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -457,8 +439,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/wasm/">
-                                    <span class="chip bg-color">wasm</span>
+                                <a href="/tags/Codeforces/">
+                                    <span class="chip bg-color">Codeforces</span>
                                 </a>
                             
                         </div>
@@ -502,70 +484,18 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2022/02/16/Browser-User-Interface/">
+                <a href="/2023/11/24/Codeforces-Round-908-Div-2-A-Secret-Sport/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="Browser User Interface">
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="Codeforces Round 908 (Div. 2)-A. Secret Sport">
                         
-                        <span class="card-title">Browser User Interface</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            
-                        
-                    </div>
-                    <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-02-16
-                        </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/tech/" class="post-category">
-                                    tech
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/browser/">
-                        <span class="chip bg-color">browser</span>
-                    </a>
-                    
-                    <a href="/tags/ui/">
-                        <span class="chip bg-color">ui</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                本篇&nbsp;<i class="far fa-dot-circle"></i>
-            </div>
-            <div class="card">
-                <a href="/2022/02/16/Webassembly/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="Webassembly">
-                        
-                        <span class="card-title">Webassembly</span>
+                        <span class="card-title">Codeforces Round 908 (Div. 2)-A. Secret Sport</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -576,7 +506,57 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-02-16
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-11-24
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/algorithm/" class="post-category">
+                                    algorithm
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Codeforces/">
+                        <span class="chip bg-color">Codeforces</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/04/02/Windows-Access-Control-Lists-ACL/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="Windows Access Control Lists (ACL)">
+                        
+                        <span class="card-title">Windows Access Control Lists (ACL)</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-04-02
                             </span>
                         <span class="publish-author">
                             
@@ -590,12 +570,15 @@
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/wasm/">
-                        <span class="chip bg-color">wasm</span>
+                    <a href="/tags/windows/">
+                        <span class="chip bg-color">windows</span>
+                    </a>
+                    
+                    <a href="/tags/ACL/">
+                        <span class="chip bg-color">ACL</span>
                     </a>
                     
                 </div>

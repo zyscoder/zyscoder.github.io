@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Codeforces Round 908 (Div. 2)-D. Neutral Tonality, zyscoder">
+    <meta name="keywords" content="Codeforces Round 908 (Div. 2)-E. Freedom of Choice, zyscoder">
     <meta name="description" content="Keep calm, and dream on.">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Codeforces Round 908 (Div. 2)-D. Neutral Tonality | zyscoder</title>
+    <title>Codeforces Round 908 (Div. 2)-E. Freedom of Choice | zyscoder</title>
     <link rel="icon" type="image/png" href="/medias/%E7%99%BD%E8%89%B2%E5%8F%B2%E8%8E%B1%E5%A7%86.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -208,7 +208,7 @@
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Codeforces Round 908 (Div. 2)-D. Neutral Tonality</h1>
+                    <h1 class="description center-align post-title">Codeforces Round 908 (Div. 2)-E. Freedom of Choice</h1>
                 </div>
             </div>
         </div>
@@ -370,21 +370,34 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a><a target="_blank" rel="noopener" href="https://codeforces.com/contest/1894/problem/D">题目</a></h1><p>给定两个数组A和B，A长度为n，B长度为m。 (1&lt;&#x3D;n&lt;&#x3D;2<em>1e5,1&lt;&#x3D;𝑚&lt;&#x3D;2</em>1e5)<br>要求把输出B中的m个元素，按任意顺序插入数组A中，得到一个长度为n+m的数组C，要求数组C得最长上升子序列最短。<br>输出满足这样要求的C数组。</p>
-<h1 id="题意解析"><a href="#题意解析" class="headerlink" title="题意解析"></a>题意解析</h1><p>在数组A中插入元素b。得到a1, a2, … ai, b, … , an。为了让结果数组的LIS最小，可以对b进行分类讨论：</p>
+                <h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a><a target="_blank" rel="noopener" href="https://codeforces.com/contest/1894/problem/E">题目</a></h1><p>定义anti-beauty：一个multiset的长度为len，那么anti-beauty的值等于这个multiset中元素len的出现次数。</p>
+<p>给定m个multiset：set1, set2, …, setm。<br>每个集合seti中，存在 ni 个彼此不同的元素   a1, a2, …, ani。<br>每个集合seti中，彼此不同的元素出现的次数为  c1, c2, …, cni。</p>
+<p>现在从m个集合中选择元素组成一个新的multiset X，要求从每个集合seti中取出的元素个数为[li, ri]。<br>要求使得最后的X的anti-beauty值最小，求出这个最小的anti-beauty是多少。</p>
+<p>题目保证sum(ni) &lt;&#x3D; 1e5。</p>
+<h1 id="题意解析"><a href="#题意解析" class="headerlink" title="题意解析"></a>题意解析</h1><p>据题，如果X的anti-beauty不为0，设其长度为len，则X中一定存在元素len。<br>由于X中所有元素都来源于m个multiset（m&lt;&#x3D;1e5），即此时必然存在m个multiset中的一个ai，使得ai&#x3D;&#x3D;len。</p>
+<p>设L &#x3D; l1 + l2 + … + lm，R &#x3D; r1 + r2 + … + rm。<br>那么X的长度len可以取到[L, R]中的任意值。</p>
 <ol>
-<li>如果b特别大，大于A数组中所有元素，那么把b放到A数组的最前面，则结果数组和A数组相比，LIS不会发生改变；</li>
-<li>如果b特别小，小于A数组中所有元素，那么把b放到A数组的最后面，则结果数组和A数组相比，LIS不会发生改变；</li>
-<li>因此，只需要分析min(A) &lt; b &lt; max(A)的b元素即可。<ul>
-<li>一个朴素的想法：由于插入b的值大得有限，为了尽量不增加LIS，在条件允许的情况下尽量把b往数组后面部分插。这样可以尽量减少新插入的b为上升子序列做出贡献。所以我们决定从后往前找b的位置；</li>
-<li>由于min(A) &lt; b &lt; max(A)，那么一定可以在A数组中找到一个ai&gt;&#x3D;b。只要把b放到这样一个ai身后，那么a1-ai这一段的上升子序列，和a1-ai,b这一段的上升子序列，不会有任何区别。（能被b继承的上升子序列，都能被ai接管。）</li>
-<li>综上两个想法，那么对于任意一个b，我们只需要在A数组中从后往前找到第一个ai&gt;&#x3D;b，然后把b放到ai身后就可以了。</li>
-</ul>
-</li>
+<li>如果存在一个len (L &lt;&#x3D; len &lt;&#x3D; R)，在m个multiset中都不存在这样的元素a&#x3D;&#x3D;len，那么只要将X的长度取为len，就可以让其anti-beauty&#x3D;0；</li>
+<li>如果上述情况不发生，对任意len (L &lt;&#x3D; len &lt;&#x3D; R)，要想anti-beauty值尽可能小，那就需要尽可能从每一个multiset中取出不等于len的元素放入X中占位。当实在占不满位置，只能用元素len来填时，填入的元素len的个数，就是X长度为len时最小的anti-beauty值。枚举所有的len，从中取出最小的anti-beauty作为答案。</li>
 </ol>
-<p>具体实现时，如果对每一个b，都要从A数组的最后向前遍历，寻找满足条件的ai，复杂度直接变成O(n * m)，当场裂开。<br>所以我们先对b排序，更小的b元素会被放到更靠后的位置，处理更大的b元素时，不需要再倒回去从末尾开始找位置，双指针解决问题，复杂度就变成了O(n + m)。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;algorithm&gt;</span><br><span class="line">#include &lt;vector&gt;</span><br><span class="line"></span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">int main() &#123;</span><br><span class="line">    int t;</span><br><span class="line">    cin &gt;&gt; t;</span><br><span class="line">    while (t --) &#123;</span><br><span class="line">        int n, m;</span><br><span class="line">        cin &gt;&gt; n &gt;&gt; m;</span><br><span class="line">        static int a[int(2*1e5 + 5)];</span><br><span class="line">        static int b[int(2*1e5 + 5)];</span><br><span class="line">        static int c[int(4*1e5 + 5)];</span><br><span class="line">        for (int i = 0; i &lt; n; i++) &#123;</span><br><span class="line">            cin &gt;&gt; a[i];</span><br><span class="line">        &#125;</span><br><span class="line">        for (int i = 0; i &lt; m; i++) &#123;</span><br><span class="line">            cin &gt;&gt; b[i];</span><br><span class="line">        &#125;</span><br><span class="line">        sort(b, b + m);</span><br><span class="line"></span><br><span class="line">        for (int ita = n - 1, itb = 0, itc = n + m - 1; itc &gt;= 0;) </span><br><span class="line">        &#123;  </span><br><span class="line">            if (ita &lt; 0 || itb &gt;= m)  &#123;</span><br><span class="line">                c[itc--] = (ita &lt; 0)? b[itb++]: a[ita--];</span><br><span class="line">                continue;</span><br><span class="line">            &#125;</span><br><span class="line">            if (a[ita] &lt; b[itb]) &#123;</span><br><span class="line">                c[itc--] = a[ita--];</span><br><span class="line">            &#125; else if (a[ita] &gt;= b[itb]) &#123;</span><br><span class="line">                c[itc--] = b[itb++];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        for (int i = 0; i &lt; n + m; i++) cout &lt;&lt; c[i] &lt;&lt; &quot; &quot;;</span><br><span class="line">        cout &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>本题的坑在于具体的实现过程。</p>
+<p>当X的长度为len时，<br>设free[i][len]表示第i个multiset最多可以提供的不等于len的元素个数。<br>设cost[i][len]表示第i个multiset最少必须要提供的等于len的元素个数。</p>
+<p>此时，min-anti-beauty &#x3D; max(max(0, len - (free[0][len] + free[1][len] + … + free[m][len])), (cost[0][len] + cost[1][len] + … + cost[m][len]))。</p>
+<p>其中，len - (free[0][len] + free[1][len] + … + free[m][len])表示，每个multiset中尽可能多取不为len的元素，最后还缺少的部分用元素len来补，总共需要多少元素len补位。</p>
+<p>由于每个multiset中取出的元素个数为[li, ri]，存在free[i][len] &lt; li的可能，这时就必须用元素len来补充当前multiset的空缺，cost[0][len] + cost[1][len] + … + cost[m][len]表示，每个multiset至少需要提供的元素len的个数之和。</p>
+<p>继续推导细化上述公式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(free[0][len] + free[1][len] + ... + free[m][len]) = </span><br><span class="line">min(r[0], (sum[0] - c[0][len])) + min(r[1], (sum[0] - c[1][len])) + ... + min(r[m], (sum[0] - c[m][len]))</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cost[0][len] + cost[1][len] + ... + cost[m][len] = </span><br><span class="line">max(0, l[0] - (sum[0] - c[0][len])) + max(0, l[1] - (sum[1] - c[1][len])) + ... + max(0, l[m] - (sum[m] - c[m][len]))</span><br></pre></td></tr></table></figure>
 
+<p>至此，l[i], r[i], sum[i]都是直接输入或简单累加就可以得到的值，只有一个例外。<br>c[i][len]看起来也是输入的值，但由于L &lt;&#x3D; len &lt;&#x3D; R，完全有可能在某些multiset中，并不存在len元素，事先也就不存在c[i][len]的输入结果。</p>
+<p>这个问题对于cost[i][len] &#x3D; max(0, l[i] - (sum[i] - c[i][len]))而言不成问题，因为当c[i][len] &#x3D;&#x3D; 0时，l[i] &lt;&#x3D; sum[i]，因此这个最值一定取0，所以即使跳过元素len也没关系，不会对结果造成影响。</p>
+<p>但对于free[i][len] &#x3D; min(r[i], (sum[i] - c[i][len]))，情况就不一样了。<br>如果给每个multiset对应不存在的元素len都补上c[i][len] &#x3D; 0，不管是空间还是时间都承受不住，这相当于补出来一个m * sum(ni)的矩阵数组，1e5 * 1e5当场爆炸。</p>
+<p>那怎么办呢？<br>思考良久，我首先想到用线段树来解决这个问题。对于一个multiset a1, a2, …, ani，两个元素ax, ay（L &lt;&#x3D; ax &lt; ay &lt;&#x3D; R）之间不存在于multiset的部分[ax + 1, ay - 1]，直接在线段树上区间更新free（在free上进行区间更新，增加r[i]）。这样就可以把维护成本从1e5 * 1e5 降到一个常数比较大的1e5 * log(1e5)。<br>然而，TLE了。。。</p>
+<p>正解是在公式上移项。（时间会卡你，空间会卡你，数学不会，数学不会就是不会。。。）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">free[0][len] + free[1][len] + ... + free[m][len] </span><br><span class="line"></span><br><span class="line">= min(r[0], (sum[0] - c[0][len])) + min(r[1], (sum[0] - c[1][len])) + ... + min(r[m], (sum[0] - c[m][len])) </span><br><span class="line"></span><br><span class="line">= r[0] + r[1] + ... + r[m] - r[0] - r[1] - ... - r[m] + min(r[0], (sum[0] - c[0][len])) + min(r[1], (sum[0] - c[1][len])) + ... + min(r[m], (sum[0] - c[m][len]))</span><br><span class="line"></span><br><span class="line">= R + min(0, (sum[0] - c[0][len] - r[0])) + min(0, (sum[0] - c[1][len] - r[1])) + ... + min(0, (sum[0] - c[m][len] - r[m]))</span><br></pre></td></tr></table></figure>
+
+<p>此时，当c[i][len] &#x3D;&#x3D; 0时，sum[i] &gt;&#x3D; r[i], min(0, (sum[i] - c[i][len] - r[i]))的最值一定取0。因此跳过也不会影响结果了。(emmmmm代码实现的时候有点正负号的变换，问题不大。。。)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;vector&gt;</span><br><span class="line">#include &lt;set&gt;</span><br><span class="line">#include &lt;limits&gt;</span><br><span class="line">#include &lt;map&gt;</span><br><span class="line">#include &lt;cstring&gt;</span><br><span class="line"></span><br><span class="line">using namespace std;</span><br><span class="line">typedef long long ll;</span><br><span class="line"></span><br><span class="line">int main() &#123;</span><br><span class="line"></span><br><span class="line">    int t;</span><br><span class="line">    cin &gt;&gt; t;</span><br><span class="line">    while (t --) &#123;</span><br><span class="line">        int m;</span><br><span class="line">        cin &gt;&gt; m;</span><br><span class="line"></span><br><span class="line">        ll n, l, r;</span><br><span class="line">        static ll a[int(1e5) + 5];</span><br><span class="line">        static ll c[int(1e5) + 5];</span><br><span class="line"></span><br><span class="line">        ll L = 0, R = 0, sum_c;</span><br><span class="line"></span><br><span class="line">        map&lt;ll, ll&gt; frees;</span><br><span class="line">        map&lt;ll, ll&gt; costs;</span><br><span class="line"></span><br><span class="line">        while (m--) &#123;</span><br><span class="line">            cin &gt;&gt; n &gt;&gt; l &gt;&gt; r;</span><br><span class="line">            L += l; R += r;</span><br><span class="line">            </span><br><span class="line">            for (int i = 0; i &lt; n; i++) &#123;</span><br><span class="line">                cin &gt;&gt; a[i];</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            sum_c = 0;</span><br><span class="line">            for (int i = 0; i &lt; n; i++) &#123;</span><br><span class="line">                cin &gt;&gt; c[i];</span><br><span class="line">                sum_c += c[i];</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            for (int i = 0; i &lt; n; i++) &#123;</span><br><span class="line">                if (frees.find(a[i]) == frees.end())</span><br><span class="line">                    frees[a[i]] = max(0ll, r - (sum_c - c[i]));</span><br><span class="line">                else frees[a[i]] += max(0ll, r - (sum_c - c[i]));</span><br><span class="line">                </span><br><span class="line">                if (costs.find(a[i]) == costs.end())</span><br><span class="line">                    costs[a[i]] = max(0ll, l - (sum_c - c[i]));</span><br><span class="line">                else costs[a[i]] += max(0ll, l - (sum_c - c[i]));</span><br><span class="line">                </span><br><span class="line">                // cout &lt;&lt; a[i] &lt;&lt; &quot; &quot; &lt;&lt; frees[a[i]] &lt;&lt; &quot; &quot; &lt;&lt; costs[a[i]] &lt;&lt; endl;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        ll res = numeric_limits&lt;ll&gt;::max();</span><br><span class="line">        for (ll len = L; len &lt;= R; len++) &#123;</span><br><span class="line">            if (res == 0) break;</span><br><span class="line">            if (frees.find(len) == frees.end()) res = 0;</span><br><span class="line">            res = min(res, max(max(0ll, len - R + frees[len]), costs[len]));</span><br><span class="line">        &#125;</span><br><span class="line">        cout &lt;&lt; res &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
                 
             </div>
             <hr/>
@@ -410,7 +423,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://zyscoder.github.io/2023/11/24/Codeforces-Round-908-Div-2-D-Neutral-Tonality/">https://zyscoder.github.io/2023/11/24/Codeforces-Round-908-Div-2-D-Neutral-Tonality/</a>
+                    <a href="https://zyscoder.github.io/2023/11/24/Codeforces-Round-908-Div-2-E-Freedom-of-Choice/">https://zyscoder.github.io/2023/11/24/Codeforces-Round-908-Div-2-E-Freedom-of-Choice/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -493,9 +506,10 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2023/11/24/Codeforces-Round-908-Div-2-E-Freedom-of-Choice/">
                     <div class="card-image">
@@ -513,9 +527,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2023-11-24
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-11-24
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -528,6 +542,7 @@
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -546,13 +561,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2023/11/24/Codeforces-Round-908-Div-2-C-Anonymous-Informant/">
+                <a href="/2023/11/24/Codeforces-Round-908-Div-2-D-Neutral-Tonality/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="Codeforces Round 908 (Div. 2)-C. Anonymous Informant">
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="Codeforces Round 908 (Div. 2)-D. Neutral Tonality">
                         
-                        <span class="card-title">Codeforces Round 908 (Div. 2)-C. Anonymous Informant</span>
+                        <span class="card-title">Codeforces Round 908 (Div. 2)-D. Neutral Tonality</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
